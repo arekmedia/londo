@@ -50,7 +50,7 @@ class SimpleImage {
    function getWidth() {
  
       return imagesx($this->image);
-   }
+   }	
    function getHeight() {
  
       return imagesy($this->image);
@@ -85,7 +85,7 @@ class SimpleImage {
 
 // Define a destination
 include('config.php');
-$targetFolder = '/media/upload'; // Relative to the root
+$targetFolder = '/bk/media/upload'; // Relative to the root
 $time		  = chr(rand(65, 90)).chr(rand(65, 90)).chr(rand(65, 90))."(".$_FILES['Filedata']['size'].")".strtotime(date('y-m-d H:i:s'));
 if (!empty($_FILES)) {
 	$filename		= $_REQUEST['sesid']."_".$time."_".$_FILES['Filedata']['name'];
@@ -127,7 +127,7 @@ if (!empty($_FILES)) {
 		$sql	= "update jbseek set sk_photo='".$filename."' where sk_id='".$_REQUEST['sesid']."'";
 		mysql_query($sql);
    
-		echo "http://".$_SERVER['SERVER_NAME']."/media/upload/photo/thumb/".$filename;
+		echo "http://".$_SERVER['SERVER_NAME']."/bk/media/upload/photo/thumb/".$filename;
 	} else {
 		echo 'Invalid file type.';
 	}

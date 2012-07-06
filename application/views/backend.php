@@ -153,7 +153,7 @@ function selected($a,$b,$c){
 									<div style="">Username</div>
 									<div style=""><input type="text" name="username"></div>
 									<div style="">Password</div>
-									<div style=""><input name="password"></div>
+									<div style=""><input name="password" type="password"></div>
 									<input type="button" value="login" class="button_login" onclick="login(this.form)">
 								</form>
 							</li>
