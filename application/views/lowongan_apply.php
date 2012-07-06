@@ -10,7 +10,7 @@ FB.init({
 </script>
 <form method="POST" id="form" name="form">
 	<h2 style="color:#639C27">Ajukan Lamaran Pekerjaan Saya</h2>
-	<div style="float:left;width:60%;margin:10px;">
+	<div style="float:left;width:55%;margin:10px;">
 <!-- <fb:registration 
 	fields="[
 		{'name':'name'},
@@ -27,29 +27,36 @@ FB.init({
 
 		&nbsp;
 	</div>
-	<div style="float:left;padding:10px;border-left: 1px solid #EEEEEE;">
+	<div style="float:left;padding:0 10px;border-left: 1px solid #EEEEEE;">
 		<?php 
 
 		if($q_pelamar->num_rows() > 0 && $this->session->userdata("priv") == "js"){
 			$r_pelamar	= $q_pelamar->row();
 		?>
-			<h2>Melamar Pekerjaan Sebagai</h2>
-			<img src="<?php echo $r_pelamar->sk_photo; ?>">
+			<h2>Pelamar </h2>
+			<div style="padding:5px 0;width:100%;height:30%;">
+				<div style="float:left;width:50px;"><img src="<?php echo base_url()."media/upload/photo/icon/".$r_pelamar->sk_photo; ?>"></div> <b><?php echo $r_pelamar->sk_nama; ?></b>
+			</div>
+			<div style="clear:both"></div>
+			<div style=""><a href="#">&rarr; Edit Profile Saya</a></div>
+			<div style="text-align:center">
+				<input type="button" value="Applay Now" class="buttonGreen" onclick="login_apply(this.form)">
+			</div>
 		<?php
 		}else{
 		?>
 
-		<h2>Login </h2>
-		<div id="message_login"></div>
-		<div style="float:left;width:29%">Username</div>
-		<div style="float:left;"><input type="text" name="username_apply"></div>
-		<div style="clear:both"></div>
-		<div style="float:left;width:29%">Password</div>
-		<div style="float:left;"><input name="password_apply" type="password"></div>
-		<div style="clear:both"></div>
-		<input type="button" value="login" class="buttonOrange" onclick="login_apply(this.form)">
-		<div style="clear:both"></div>
-		<a href="<?php echo base_url(); ?>main/register">&rarr; Register New Account</a>
+			<h2>Login </h2>
+			<div id="message_login"></div>
+			<div style="float:left;width:29%">Username</div>
+			<div style="float:left;"><input type="text" name="username_apply"></div>
+			<div style="clear:both"></div>
+			<div style="float:left;width:29%">Password</div>
+			<div style="float:left;"><input name="password_apply" type="password"></div>
+			<div style="clear:both"></div>
+			<input type="button" value="login" class="buttonOrange" onclick="login_apply(this.form)">
+			<div style="clear:both"></div>
+			<a href="<?php echo base_url(); ?>main/register">&rarr; Register New Account</a>
 
 		<?php
 		}
