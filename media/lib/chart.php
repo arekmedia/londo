@@ -15,6 +15,7 @@ Day	All Visits (Segment)	New Visitors (Segment)
 	$end_date = date("l, F d, Y");
 	$check_date = $start_date;
 	$i	= 0;
+	
 	while ($check_date != $end_date) {
 		$i++;
 		$check_date = date("l, F d, Y", strtotime ("+1 day", strtotime($check_date)));

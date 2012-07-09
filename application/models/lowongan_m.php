@@ -62,6 +62,23 @@ class Lowongan_m extends CI_Model {
 		return $result;
 	}
 
+	function check_apply($par = NULL){
+		$where		= "";
+		if(!empty($par['vac_id']) && $par['vac_id'] != "")
+			$where	.= " and vac_id = '".$par['vac_id']."'";
+		if(!empty($par['sk_id']) && $par['sk_id'] != "")
+			$where	.= " and sk_id = '".$par['sk_id']."'";
+
+		$sql_check	= "select * from jbapplay where 1 ".$where." ";
+		$q_check	= $this->db->query($sql_check);
+		return $q_check;
+	}
+	
+	function do_apply($par){
+		$insert_apply	= "insert into jbapplay (vac_id,sk_id,app_status) values ('".$par['vac_id']."','".$par['sk_id']."','received')";
+		$this->db->query($insert_apply);
+	}
+	
 	function q_location_lowongan($par = NULL){
 		$where	= "";
 		if(!empty($par['vac_id']) && $par['vac_id'] != "")
@@ -125,8 +142,24 @@ class Lowongan_m extends CI_Model {
 		}else{
 			$this->db->query("update jbvacancy_stat set click=click+1 where date=CURDATE() and vac_id='".$lowongan_p['vac_id']."'");
 		}
+	}
 
+	function uc_apply($lowongan_p = NULL){
+		$where1	= "";
+		$where2	= "";
+		if(array_key_exists('vac_id',$lowongan_p)){
+			$where1	.= "and s.vac_id='".$lowongan_p['vac_id']."'";
+		}
+		if(array_key_exists('comp_id',$lowongan_p)){
+			$where2	.= "and v.comp_id='".$lowongan_p['comp_id']."'";
+		}
 
+		$q_stat	= $this->db->query("select * from `jbvacancy_stat` s where 1 ".$where1." and date=CURDATE()");
+		if($q_stat->num_rows() == 0){
+			$this->db->query("insert into jbvacancy_stat (vac_id,date,apply) values('".$lowongan_p['vac_id']."',CURDATE(),1)");
+		}else{
+			$this->db->query("update jbvacancy_stat set apply=apply+1 where date=CURDATE() and vac_id='".$lowongan_p['vac_id']."'");
+		}
 	}
 	
 	function q_related($related){

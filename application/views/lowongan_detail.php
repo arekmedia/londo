@@ -1,3 +1,4 @@
+<div id="DetailLowongan">
 <div style="clear:both;"></div>
 <div id="popupContact">		
 	<p id="contactArea"></p>
@@ -42,3 +43,4 @@
 
 ?>
 
+</div>

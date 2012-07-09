@@ -17,7 +17,6 @@ class Main extends CI_Controller {
 		$this->load->view('backend',$data);
 	}
 
-
 	function ragam_lowongan(){
 		$main_p['comp_limit']	= 20;
 		$data		= $this->main_m->q_spes($main_p);

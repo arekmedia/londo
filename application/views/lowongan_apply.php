@@ -11,6 +11,7 @@ FB.init({
 <form method="POST" id="form" name="form">
 	<h2 style="color:#639C27">Ajukan Lamaran Pekerjaan Saya</h2>
 	<div style="float:left;width:55%;margin:10px;">
+		<div id="message_apply"></div>
 <!-- <fb:registration 
 	fields="[
 		{'name':'name'},
@@ -33,6 +34,7 @@ FB.init({
 		if($q_pelamar->num_rows() > 0 && $this->session->userdata("priv") == "js"){
 			$r_pelamar	= $q_pelamar->row();
 		?>
+			<input type="hidden" name="vac_id" id="vac_id" value="<?php echo $this->uri->segment(3);?>">
 			<h2>Pelamar </h2>
 			<div style="padding:5px 0;width:100%;height:30%;">
 				<div style="float:left;width:50px;"><img src="<?php echo base_url()."media/upload/photo/icon/".$r_pelamar->sk_photo; ?>"></div> <b><?php echo $r_pelamar->sk_nama; ?></b>
@@ -40,12 +42,12 @@ FB.init({
 			<div style="clear:both"></div>
 			<div style=""><a href="#">&rarr; Edit Profile Saya</a></div>
 			<div style="text-align:center">
-				<input type="button" value="Applay Now" class="buttonGreen" onclick="login_apply(this.form)">
+				<input type="button" value="Applay Now" class="buttonGreen" onclick="apply(this.form)">
 			</div>
 		<?php
 		}else{
 		?>
-
+			<input type="hidden" name="vac_id" id="vac_id" value="<?php echo $this->uri->segment(3);?>">
 			<h2>Login </h2>
 			<div id="message_login"></div>
 			<div style="float:left;width:29%">Username</div>

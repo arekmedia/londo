@@ -19,7 +19,6 @@ class Perusahaan extends CI_Controller {
 
 	function index()
 	{
-
 		$data['content']		= "perusahaan_main";
 		$data['side']			= "perusahaan_side";
 		$data['base_url']		= $this->config->item('base_url');

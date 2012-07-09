@@ -27,6 +27,21 @@ class Lowongan extends CI_Controller {
 		$this->load->view('lowongan_apply',$data);
 	}
 
+	function do_apply(){
+		$par['vac_id']	= $this->input->post('vac_id');
+		$par['sk_id']	= $this->session->userdata('sk_id');			
+		
+		$check_apply	= $this->lowongan_m->check_apply($par);
+		if($check_apply->num_rows() < 1){
+			$this->lowongan_m->do_apply($par);
+			$this->lowongan_m->uc_apply($par);
+			$this->lowongan_m->uc_view($par);
+			echo "1";
+		}else{
+			echo "0";
+		}
+	}
+	
 	function search(){
 		$par['null']			= NULL;
 		$data				= $this->main_m->q_spes($par);
