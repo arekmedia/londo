@@ -184,7 +184,7 @@
 <div id="stat_iklan">
 	<div class="button">
 		<a rel="nofollow" class="buttonYellow postJobButton" href="<?php echo base_url()."perusahaan/lowongan_baru/"; ?>" alt="Buat Lowongan Baru" title="Buat Lowongan Baru">Buat Lowongan Baru</a>
-		<a rel="nofollow" class="buttonYellow postJobButton" href="londo-edan.php" alt="Cari Pelamar Kerja" title="Cari Pelamar Kerja">Cari Pelamar Kerja</a>
+		<a rel="nofollow" class="buttonYellow postJobButton" href="<?php echo base_url()."perusahaan/cari_pekerja"; ?>" alt="Cari Pelamar Kerja" title="Cari Pelamar Kerja">Cari Pelamar Kerja</a>
 	</div>
 	<div style="clear:both;padding:10px">&nbsp;</div>
 	<div class="bbottom">

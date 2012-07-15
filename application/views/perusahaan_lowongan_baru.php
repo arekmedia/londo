@@ -258,7 +258,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="20%">Lama Pengalaman Kerja </td>
+			<td width="20%">Lama Pengalaman Kerja (Min)</td>
 			<td><input type="text" size="3" maxlength="2" name="sk_exper"> Thn</td>
 		</tr>
 		<tr>

@@ -40,7 +40,7 @@ FB.init({
 				<div style="float:left;width:50px;"><img src="<?php echo base_url()."media/upload/photo/icon/".$r_pelamar->sk_photo; ?>"></div> <b><?php echo $r_pelamar->sk_nama; ?></b>
 			</div>
 			<div style="clear:both"></div>
-			<div style=""><a href="#">&rarr; Edit Profile Saya</a></div>
+			<div style=""><a href="<?php echo base_url(); ?>pelamar/">&rarr; Edit Profile Saya</a></div>
 			<div style="text-align:center">
 				<input type="button" value="Applay Now" class="buttonGreen" onclick="apply(this.form)">
 			</div>

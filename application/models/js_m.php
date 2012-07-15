@@ -2,6 +2,18 @@
 
 class Js_m extends CI_Model {
 
+	function list_pekerja($par){
+		$sql	= "SELECT je.*,js.*,ju.email,jc.city_value,jt.state_value,jt.state_id FROM  jbuser ju, jbcity jc, jbstate jt, jbseek js
+		left join jbseek_edu je on js.sk_id=je.sk_id  
+		left join jbseek_rule jr on js.sk_id=jr.sk_id
+		left join jbmaster_edu_qualify jq on je.edu_qualify_id=jq.edu_qualify_id
+		where jr.rule_id='1' and jr.value='1' and ju.user_id=js.user_id and js.city_id=jc.city_id and jc.state_id = jt.state_id ";
+	
+		$query	= $this->db->query($sql);
+		return $query;
+	}
+
+
 	/****************************
 	[!] Profile
 	****************************/
