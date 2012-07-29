@@ -22,33 +22,34 @@
 	if($q_lowongan->num_rows() < 1 ){
 
 		$msg	= "<div id='msg'><div class='notify'> Maaf, Kami tidak menemukan data yang cocok </div></div>";
-		$msg	.= "<div style='float:left;padding:3px 0;'><h2>Lowongan Terkait</h2></div>";
 
 		if($_ctg == 'search'){
 			$msg	= "<div id='msg'><div class='notify'> Maaf, Kami tidak menemukan data yang cocok </div></div>";
 			$show_result	= FALSE;		
 		}else{
-			$r_par['related_by']		= $_ctg;
+			$r_par['related_by']	= $_ctg;
 			$r_par['related_data']	= $_id;	
-			$q_related	= $this->lowongan_m->q_related($r_par);
-			$r_rel		= $q_related->row();
+			$q_related				= $this->lowongan_m->q_related($r_par);
 			
-			if($r_par['related_by'] == 'kerja')
-				$par['spes_level']	= $r_rel->spes_level;
-			else if($r_par['related_by'] == 'kota')
-				$par['state_id']	= $r_rel->state_id;
+			if($q_related !== NULL && $q_related->num_rows() > 0){
+				$msg	.= "<div style='float:left;padding:3px 0;'><h2>Lowongan Terkait</h2></div>";
+				$r_rel					= $q_related->row();
+			
+				if($r_par['related_by'] == 'kerja')
+					$par['spes_level']	= $r_rel->spes_level;
+				else if($r_par['related_by'] == 'kota')
+					$par['state_id']	= $r_rel->state_id;
 
-
-			$par['null']	= NULL;
-
-			$par['page']		= $page_uri;
-			$par['limit']		= $limit;
-			$q_lowongan		= $this->lowongan_m->q_lowongan($par);
-			$q_num_lowongan	= $this->lowongan_m->q_lowongan($par,TRUE);
+				$par['null']	= NULL;
+				$par['page']	= $page_uri;
+				$par['limit']	= $limit;
+				$q_lowongan		= $this->lowongan_m->q_lowongan($par);
+				$q_num_lowongan	= $this->lowongan_m->q_lowongan($par,TRUE);
+			}
 		}
 	}
 
-	$total_page	= ceil($q_num_lowongan/2);
+	$total_page	= ceil($q_num_lowongan/$limit);
 ?>
 
 <div style="border:1px solid #EEE;border-radius:10px;padding:10px;">
@@ -89,8 +90,8 @@
 	</span>
 	</div>	
 	<div class="clear"></div>
-	<div style="padding:5px 0;" align="center">
-		<a class="buttonGreen" href="#" onclick="submitform()" rel="nofollow">Cari Lowongan</a>	
+	<div style="padding-top:20px;width:100%" align="center">
+		<a class="buttonSearch" href="#" onclick="submitform()" rel="nofollow">Cari Lowongan</a>	
 	</div>	
 	<div class="clear"></div>
    </form>
@@ -104,7 +105,7 @@
   
   <?php
 
-	if($q_num_lowongan > 2){
+	if($q_num_lowongan > $limit){
 
 		$a	= $page_uri+1;
 		$b	= $page_uri-1;

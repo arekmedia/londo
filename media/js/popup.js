@@ -24,7 +24,7 @@ function loadPopup(file){
 			var data = uri+"pelamar/p_profile";
 		}
 		if(file	== "latar_pendidikan"){
-			var data = uri+"pelamar/p_data_edu";
+			var data = uri+"pelamar/p_form_edu";
 		}
 		
 		$("#contactArea").load(data);
@@ -66,6 +66,9 @@ function loadPopupid(file,id){
 		refresh	= false;
 			var data = uri+"lowongan/apply/"+id;
 		}
+		if(file	== "edu"){
+			var data = uri+"pelamar/p_data_edu/"+id;
+		}
 
 		$("#contactArea").load(data);
 		$("#backgroundPopup").css({
@@ -86,7 +89,6 @@ function loadPopupid(file,id){
 		}
 				
 		$("#contactArea").load(data);
-
 	}
 	
 }
@@ -118,7 +120,6 @@ function centerPopup(){
 		"left": windowWidth/2-popupWidth/2
 	});
 	//only need force for IE6
-	
 	$("#backgroundPopup").css({
 		//"height": windowHeight*3
 	});

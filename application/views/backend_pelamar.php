@@ -6,11 +6,12 @@
 <link href="<?php echo base_url(); ?>/media/css/switch.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="<?php echo base_url(); ?>/media/development-bundle/themes/base/jquery.ui.all.css">
 <script src="<?php echo base_url(); ?>/media/development-bundle/jquery-1.6.2.js"></script>
+<script src="<?php echo base_url(); ?>/media/js/jalert/jquery.alerts.js"></script>
 <script src="<?php echo base_url(); ?>/media/js/function.js"></script>
 <script src="<?php echo base_url(); ?>/media/js/validator.js"></script>
 <script src="<?php echo base_url(); ?>/media/js/popup.js"></script>
-<script src="<?php echo base_url(); ?>/media/js/editable.js"></script>
 
+<link href="<?php echo base_url(); ?>/media/css/jalert/jquery.alerts.css" type="text/css" rel="stylesheet" />
 <link href="<?php echo base_url(); ?>/media/css/uploadify.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="<?php echo base_url(); ?>/media/js/uploadify/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>/media/js/uploadify/swfobject.js"></script>

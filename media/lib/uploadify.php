@@ -118,11 +118,12 @@ if (!empty($_FILES)) {
 
 		$row_data	= mysql_fetch_array($query_data);
 		
-		if(file_exists($targetPath.'/photo/full/'.$row_data['sk_photo']))
-			unlink($targetPath.'/photo/full/'.$row_data['sk_photo']);
-		if(file_exists($targetPath.'/photo/thumb/'.$row_data['sk_photo']))
-			unlink($targetPath.'/photo/thumb/'.$row_data['sk_photo']);
-			
+		if($row_data['sk_photo'] != "" ){
+			if( file_exists($targetPath.'/photo/full/'.$row_data['sk_photo']))
+				unlink($targetPath.'/photo/full/'.$row_data['sk_photo']);
+			if($row_data['sk_photo'] != "" && file_exists($targetPath.'/photo/thumb/'.$row_data['sk_photo']))
+				unlink($targetPath.'/photo/thumb/'.$row_data['sk_photo']);
+		}	
   
 		$sql	= "update jbseek set sk_photo='".$filename."' where sk_id='".$_REQUEST['sesid']."'";
 		mysql_query($sql);

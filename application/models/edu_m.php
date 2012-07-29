@@ -20,6 +20,52 @@ class Edu_m extends CI_Model{
 	
 	}
 
+	/****************************
+	[!] Pendidikan Pekerja
+	****************************/
+	function pendidikan($js_p = NULL)
+	{
+		$where	= "";
+		if(array_key_exists('sk_id',$js_p))
+			$where	.= " and je.sk_id = '".$js_p['sk_id']."'";
+		if(array_key_exists('edu_id',$js_p))
+			$where	.= " and je.edu_id = '".$js_p['edu_id']."'";
+			
+		$query	= $this->db->query("SELECT * FROM jbmaster_edu_qualify jeq, jbmaster_edu_field jef, jbseek js left join jbseek_edu je on js.sk_id = je.sk_id  where je.edu_qualify_id = jeq.edu_qualify_id and je.edu_field_id = jef.edu_field_id ".$where." order by je.edu_qualify_id ");
+			
+		return $query;
+	}
+
+	function edit_pendidikan($par){
+		$sql	= "update jbseek_edu set
+			edu_field_id = '".$par['edu_field_id']."',
+			edu_qualify_id ='".$par['edu_qualify_id']."',
+			edu_thn_ajaran ='".$par['edu_thn_ajaran']."',
+			edu_instansi ='".$par['edu_instansi']."',
+			edu_location ='".$par['edu_location']."',
+			edu_grade ='".$par['edu_grade']."'
+			where edu_id='".$par['edu_id']."'";
+		$this->db->query($sql);
+	}
+	
+	function add_pendidikan($par){
+	
+		$sql	= "insert into jbseek_edu (edu_field_id,edu_qualify_id,edu_thn_ajaran,edu_instansi,edu_location,edu_grade,sk_id) 
+					values ('".$par['edu_field_id']."','".$par['edu_qualify_id']."','".$par['edu_thn_ajaran']."','".$par['edu_instansi']."','".$par['edu_location']."','".$par['edu_grade']."','".$par['sk_id']."')";
+			
+		$this->db->query($sql);
+	}
+	
+	
+	function del_pendidikan($par){
+		$where	= " and edu_id='".$par['edu_id']."'";
+		
+		$sql	= "delete from jbseek_edu where 1 ".$where." ";
+		echo $sql;
+		$this->db->query($sql);		
+	}
+/*
+GA DIPAKE
 	function edit_edu($par = NULL){
 	
 		if(!empty($par['uri']) && $par['uri'] != "" ){
@@ -90,7 +136,7 @@ class Edu_m extends CI_Model{
 		}
 	
 	}
-
+*/
 	function edu_lang($par = NULL){
 		$where	= "";
 				

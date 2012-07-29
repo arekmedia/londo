@@ -2,12 +2,16 @@
 
 class Js_m extends CI_Model {
 
-	function list_pekerja($par){
+	function list_pekerja($par = NULL){
+		$where	= "";
+
+		//if(!empty($par['']) && )
+
 		$sql	= "SELECT je.*,js.*,ju.email,jc.city_value,jt.state_value,jt.state_id FROM  jbuser ju, jbcity jc, jbstate jt, jbseek js
 		left join jbseek_edu je on js.sk_id=je.sk_id  
 		left join jbseek_rule jr on js.sk_id=jr.sk_id
 		left join jbmaster_edu_qualify jq on je.edu_qualify_id=jq.edu_qualify_id
-		where jr.rule_id='1' and jr.value='1' and ju.user_id=js.user_id and js.city_id=jc.city_id and jc.state_id = jt.state_id ";
+		where 1 ".$where." and jr.rule_id='1' and jr.value='1' and ju.user_id=js.user_id and js.city_id=jc.city_id and jc.state_id = jt.state_id group by js.sk_id";
 	
 		$query	= $this->db->query($sql);
 		return $query;
@@ -78,45 +82,7 @@ class Js_m extends CI_Model {
 
 		$this->db->query("delete from jbseek_rule where 1 ".$where." ");
 		$this->db->query("insert into jbseek_rule(sk_id,rule_id,value) values('".$par['sk_id']."','".$par['rule_id']."','".$par['value']."') ");
-	}
-
-	/****************************
-	[!] Pendidikan
-	****************************/
-	function pendidikan($js_p = NULL)
-	{
-		$where	= "";
-
-		if(array_key_exists('user_id',$js_p))
-			$where	= " and ju.user_id = '".$js_p['user_id']."'";
-		if(array_key_exists('sk_id',$js_p))
-			$where	= " and je.sk_id = '".$js_p['sk_id']."'";
-		
-		$query	= $this->db->query("SELECT je.*, jeq.*, jef.* FROM 
-			jbseek js, 
-			jbmaster_edu_qualify jeq,
-			jbmaster_edu_field jef,
-			jbseek_edu je 
-			where 
-			je.edu_qualify_id = jeq.edu_qualify_id and
-			je.edu_field_id = jef.edu_field_id ".$where." ");
-		return $query;
-	}
-
-	function edit_pendidikan($par){
-	
-		$sql	= "update jbseek_edu set
-			edu_field_id = '".$par['edu_field_id']."',
-			edu_qualify_id ='".$par['edu_qualify_id']."',
-			edu_thn_ajaran ='".$par['edu_thn_ajaran']."',
-			edu_instansi ='".$par['edu_instansi']."',
-			edu_location ='".$par['edu_location']."',
-			edu_grade ='".$par['edu_grade']."',
-			sk_id='".$par['sk_id']."'";
-		
-		$this->db->query($sql);
-	}
-	
+	}	
 	
 	function bahasa($js_p = NULL)
 	{

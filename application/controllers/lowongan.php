@@ -7,11 +7,24 @@ class Lowongan extends CI_Controller {
 		parent::__construct();
 	}
 
+	#error
 	function index(){
 		$lowongan_p['status']	= "publish";
 
+		$par['null']			= NULL;
+		$data				= $this->main_m->q_spes($par);
+		$data['q_state']		= $this->main_m->q_state();
+		$page_uri	= $this->uri->segment(2);
+
+		if(is_numeric($page_uri) == FALSE) $page_uri = 1;
+			$lowongan_p['page']	= $page_uri;
+
+		$lowongan_p['limit']		= 20;		
 		$data['q_lowongan']		= $this->lowongan_m->q_lowongan($lowongan_p);
-		$data['side']			= "lowongan_related";		
+
+		$data['limit']		= $lowongan_p['limit'];
+		$data['q_num_lowongan']	= $this->lowongan_m->q_lowongan($lowongan_p,TRUE);
+		$data['side']			= "lowongan_related";
 		$data['content']		= "lowongan_browse.php";
 		$data['base_url']		= $this->config->item('base_url');
 		$this->load->view('backend',$data);
@@ -62,7 +75,7 @@ class Lowongan extends CI_Controller {
 		$lowongan_p['spes_id']	= $this->session->userdata('spes_id');
 		$lowongan_p['state_id']	= $this->session->userdata('stateid_js');
 		$lowongan_p['city_id']	= $this->session->userdata('city_id_js');
-		$lowongan_p['limit']		= 2;		
+		$lowongan_p['limit']		= 20;		
 
 		$data['q_lowongan']		= $this->lowongan_m->q_lowongan($lowongan_p);
 
@@ -92,7 +105,32 @@ class Lowongan extends CI_Controller {
 			$lowongan_p['page']	= $page_uri;
 
 		$lowongan_p['spes_id']	= $uri_id;
-		$lowongan_p['limit']		= 2;		
+		$lowongan_p['limit']		= 20;		
+		$data['q_lowongan']		= $this->lowongan_m->q_lowongan($lowongan_p);
+
+		$data['limit']		= $lowongan_p['limit'];
+		$data['q_num_lowongan']	= $this->lowongan_m->q_lowongan($lowongan_p,TRUE);
+		$data['side']			= "lowongan_related";
+		$data['content']		= "lowongan_browse.php";
+		$data['base_url']		= $this->config->item('base_url');
+		$this->load->view('backend',$data);
+	}
+
+	function ragam(){
+
+		$uri_id = $this->uri->segment(3);
+		if($uri_id == "") redirect(base_url(), 'refresh');
+
+		$par['null']			= NULL;
+		$data					= $this->main_m->q_spes($par);
+		$data['q_state']		= $this->main_m->q_state();
+		$page_uri	= $this->uri->segment(4);
+
+		if(is_numeric($page_uri) == FALSE) $page_uri = 1;
+
+		$lowongan_p['page']		= $page_uri;
+		$lowongan_p['ragam_id']	= $uri_id;
+		$lowongan_p['limit']	= 20;		
 		$data['q_lowongan']		= $this->lowongan_m->q_lowongan($lowongan_p);
 
 		$data['limit']		= $lowongan_p['limit'];
@@ -107,20 +145,40 @@ class Lowongan extends CI_Controller {
 		$uri_id = $this->uri->segment(3);
 		if($uri_id == "") redirect(base_url(), 'refresh');
 
-		$par['null']			= NULL;
+		$par['null']		= NULL;
 		$data				= $this->main_m->q_spes($par);
+		$data['q_state']	= $this->main_m->q_state();
+		$page_uri	= $this->uri->segment(4);
+		if(is_numeric($page_uri) == FALSE) $page_uri = 1;
+			
+		$lowongan_p['page']		= $page_uri;
+		$lowongan_p['city_id']	= $uri_id;
+		$lowongan_p['limit']	= 20;
+		$data['q_lowongan']		= $this->lowongan_m->q_lowongan($lowongan_p);
+		$data['q_num_lowongan']	= $this->lowongan_m->q_lowongan($lowongan_p,TRUE);
+		$data['limit']			= $lowongan_p['limit'];
+		$data['side']			= "lowongan_related";
+		$data['content']		= "lowongan_browse.php";
+		$data['base_url']		= $this->config->item('base_url');
+		$this->load->view('backend',$data);
+	}
+
+	function provinsi(){
+		$uri_id = $this->uri->segment(3);
+		if($uri_id == "") redirect(base_url(), 'refresh');
+
+		$par['null']			= NULL;
+		$data					= $this->main_m->q_spes($par);
 		$data['q_state']		= $this->main_m->q_state();
 		$page_uri	= $this->uri->segment(4);
 		if(is_numeric($page_uri) == FALSE) $page_uri = 1;
-			$lowongan_p['page']	= $page_uri;
-
-		$lowongan_p['city_id']	= $uri_id;
-		$lowongan_p['limit']		= 2;
+			
+		$lowongan_p['page']		= $page_uri;
+		$lowongan_p['state_id']	= $uri_id;
+		$lowongan_p['limit']	= 20;
 		$data['q_lowongan']		= $this->lowongan_m->q_lowongan($lowongan_p);
-
 		$data['q_num_lowongan']	= $this->lowongan_m->q_lowongan($lowongan_p,TRUE);
-
-		$data['limit']		= $lowongan_p['limit'];
+		$data['limit']			= $lowongan_p['limit'];
 		$data['side']			= "lowongan_related";
 		$data['content']		= "lowongan_browse.php";
 		$data['base_url']		= $this->config->item('base_url');
@@ -128,24 +186,23 @@ class Lowongan extends CI_Controller {
 	}
 	
 	function posisi(){
-		$uri_id = $this->uri->segment(4);
+		$uri_id = $this->uri->segment(3);
 		if($uri_id == "") redirect(base_url(), 'refresh');
 
 		$par['null']			= NULL;
-		$data				= $this->main_m->q_spes($par);
+		$data					= $this->main_m->q_spes($par);
 		$data['q_state']		= $this->main_m->q_state();
-		$page_uri	= $this->uri->segment(4);
+		$page_uri	= $this->uri->segment(5);
+		
 		if(is_numeric($page_uri) == FALSE) $page_uri = 1;
-			$lowongan_p['page']	= $page_uri;
 
+		$lowongan_p['page']		= $page_uri;
 		$lowongan_p['spes_id']	= $this->uri->segment(4);
 		$lowongan_p['pos_id']	= $uri_id;
-		$lowongan_p['limit']		= 2;
+		$lowongan_p['limit']	= 20;
 		$data['q_lowongan']		= $this->lowongan_m->q_lowongan($lowongan_p);
-
 		$data['q_num_lowongan']	= $this->lowongan_m->q_lowongan($lowongan_p,TRUE);
-
-		$data['limit']		= $lowongan_p['limit'];
+		$data['limit']			= $lowongan_p['limit'];
 		$data['side']			= "lowongan_related";
 		$data['content']		= "lowongan_browse.php";
 		$data['base_url']		= $this->config->item('base_url');

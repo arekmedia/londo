@@ -32,7 +32,7 @@ class Pelamar extends CI_Controller {
 		$data['q_skill']		= $this->edu_m->edu_skill();
 		$data['q_rule']		= $this->js_m->rule($js_p);
 		$data['q_resume']		= $this->js_m->resume($js_p);
-		$data['q_pendidikan']	= $this->js_m->pendidikan($js_p);
+		$data['q_pendidikan']	= $this->edu_m->pendidikan($js_p);
 		$data['q_industri']		= $this->comp_m->q_industri();
 		$data['content']		= "pelamar_main";
 		$data['side']			= "pelamar_side";
@@ -264,17 +264,37 @@ class Pelamar extends CI_Controller {
 	/************************************
 	[!] Data Education 
 	************************************/
-	function p_data_edu()
-	{
+	function p_form_edu(){
+		$data['mode']	= "form";
+		$this->load->view('pelamar_edu',$data);
+	}
+
+	function p_data_edu(){
 		$js_p['user_id']		= $this->session->userdata('userid');
 		$js_p['sk_id']			= $this->session->userdata('sk_id');
 
-		$data['q_pendidikan']	= $this->js_m->pendidikan($js_p);
+		if($this->uri->segment(3) != "")
+			$js_p['edu_id']		= $this->uri->segment(3);
+		
+		
+		$data['q_pendidikan']	= $this->edu_m->pendidikan($js_p);
+		$data['mode']	= "data";
 		$this->load->view('pelamar_edu',$data);
 
 	}
 	
-	function p_data_edu_edit(){
+	function p_data_edu_del(){
+		$edu_p['edu_id']		= $this->uri->segment(3);
+		$js_p['user_id']		= $this->session->userdata('userid');
+		$js_p['sk_id']			= $this->session->userdata('sk_id');
+
+		$q_pendidikan	= $this->edu_m->pendidikan($js_p);
+		if($q_pendidikan->num_rows() > 0){
+			$this->edu_m->del_pendidikan($edu_p);
+		}
+	}
+	
+	function p_data_edu_add(){
 		
 		$edu_thn_ajaran			= $this->input->post('ssp1')."|".$this->input->post('ssp2');
 	
@@ -283,12 +303,39 @@ class Pelamar extends CI_Controller {
 		$par['edu_thn_ajaran']	= mysql_escape_string($edu_thn_ajaran);
 		$par['edu_instansi']	= mysql_escape_string($this->input->post('edu_instansi'));
 		$par['edu_location']	= mysql_escape_string($this->input->post('edu_location'));
-		$par['edu_grade']	= mysql_escape_string($this->input->post('edu_grade'));
+		$par['edu_grade']		= mysql_escape_string($this->input->post('edu_grade'));
 		$par['sk_id']			= $this->session->userdata('sk_id');
 		
 		$this->form_validation->set_rules('edu_qualify_id','Tingkat Pendidikan','required');
 		$this->form_validation->set_rules('edu_field_id','Bidang Keahlian/Jurusan','required');
-		$this->form_validation->set_rules('ssp1','Tahun Lama Pendidikan','required');
+		$this->form_validation->set_rules('ssp1','Tahun Lama Pendidikan','required|callback_ssp');
+		$this->form_validation->set_rules('ssp2','Tahun Lama Pendidikan','required');
+		$this->form_validation->set_rules('edu_instansi','Nama Sekolah/Universitas','required');
+		$this->form_validation->set_rules('edu_location','Alamat Instansi Pendidikan','required');
+		$this->form_validation->set_rules('edu_grade','CGPA','numeric');
+		
+		if($this->form_validation->run() == TRUE){
+			echo "<div id='msg'><div class='success'>Latar Pendidikan Berhasil Disimpan</div></div>";
+			$this->edu_m->add_pendidikan($par);
+		}else{
+			echo "<div id='msg'><div class='failed'>".validation_errors()."</div></div>";		
+		}
+	}
+
+	function p_data_edu_edit(){
+		
+		$edu_thn_ajaran			= $this->input->post('ssp1')."|".$this->input->post('ssp2');
+		$par['edu_qualify_id']	= mysql_escape_string($this->input->post('edu_qualify_id'));
+		$par['edu_field_id']	= mysql_escape_string($this->input->post('edu_field_id'));
+		$par['edu_thn_ajaran']	= mysql_escape_string($edu_thn_ajaran);
+		$par['edu_instansi']	= mysql_escape_string($this->input->post('edu_instansi'));
+		$par['edu_location']	= mysql_escape_string($this->input->post('edu_location'));
+		$par['edu_grade']		= mysql_escape_string($this->input->post('edu_grade'));
+		$par['edu_id']			= $this->uri->segment(3);
+		
+		$this->form_validation->set_rules('edu_qualify_id','Tingkat Pendidikan','required');
+		$this->form_validation->set_rules('edu_field_id','Bidang Keahlian/Jurusan','required');
+		$this->form_validation->set_rules('ssp1','Tahun Lama Pendidikan','required|callback_ssp');
 		$this->form_validation->set_rules('ssp2','Tahun Lama Pendidikan','required');
 		$this->form_validation->set_rules('edu_instansi','Nama Sekolah/Universitas','required');
 		$this->form_validation->set_rules('edu_location','Alamat Instansi Pendidikan','required');
@@ -296,12 +343,24 @@ class Pelamar extends CI_Controller {
 		
 		if($this->form_validation->run() == TRUE){
 			echo "<div id='msg'><div class='success'>Latar Pendidikan Berhasil Diubah</div></div>";
-			$this->js_m->edit_pendidikan($par);
+			$this->edu_m->edit_pendidikan($par);
 		}else{
 			echo "<div id='msg'><div class='failed'>".validation_errors()."</div></div>";		
 		}
 	}
 
+	function ssp(){
+		$ssp1	= $this->input->post('ssp1');
+		$ssp2	= $this->input->post('ssp2');
+		
+		if ($ssp1 >= $ssp2){
+			$this->form_validation->set_message('ssp', "<img src='".base_url()."media/images/warning.png'> Tahun Ajaran Salah");
+			return FALSE;
+		}else{
+			return TRUE;
+		}		
+	}
+	
 	/************************************
 	[!] Language Education  
 	************************************/

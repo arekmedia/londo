@@ -22,7 +22,9 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>media/js/tiny_mce/jquery.tinymce.js"></script>
 <script type="text/javascript">
 $(function() {
-load_ragam_lowongan();
+	load_ragam_lowongan();
+	load_lokasi_lowongan();
+	load_posisi_lowongan();
 	$('textarea.tinymce').tinymce({
 		// Location of TinyMCE script
 		script_url : '<?php echo base_url(); ?>media/js/tiny_mce/tiny_mce.js',

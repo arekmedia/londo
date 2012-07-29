@@ -1,40 +1,3 @@
-<link href="<?php echo base_url(); ?>/media/css/general.css" rel="stylesheet" type="text/css">
-<script src="<?php echo base_url(); ?>/media/js/function.js"></script>
-<script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.ui.core.js"></script>
-<script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.ui.widget.js"></script>
-
-<script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.ui.tabs.js"></script>
-<script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.ui.datepicker.js"></script>
-<script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.effects.bounce.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script>
-jQuery(document).ready(function() {
-  jQuery('#datepicker').datepicker({
-    minDate: new Date(1900, 0, 1),
-    maxDate: new Date(2000,0,1),
-    constrainInput: true,
-	changeMonth: true,
-	changeYear: true
-
-	});
-});
-
-$('#save').click(function() {
-	$.ajax({
-		type: 'POST',
-		url: uri+'pelamar/p_data_edu_edit',
-		data: $('#myForm').serialize(),
-		success: function(data) {
-			$('#msg').html(data);
-			$('#msg').show('slow');
-			
-		}
-		
-	})
-  return false;
-});
-
-</script>
 <?php
 function selected($a,$b,$c){
 	if($a == $b)
@@ -42,23 +5,25 @@ function selected($a,$b,$c){
 }
 
 	/*[!] Latar Pendidikan*/
-	if($q_pendidikan->num_rows() > 0){
-		$row_pd	= $q_pendidikan->row();
+	if($mode == "data"){
 		
-		$edu_qualify_value	= $row_pd->edu_qualify_value;
-		$edu_qualify_id	= $row_pd->edu_qualify_id;
-		$edu_field_id	= $row_pd->edu_field_id;
-		$edu_grade			= $row_pd->edu_grade;
-		$edu_field_value	= $row_pd->edu_field_value;
-		$edu_thn_ajaran		= $row_pd->edu_thn_ajaran;
-		$edu_instansi		= $row_pd->edu_instansi;
-		$edu_location		= $row_pd->edu_location;
-		
-		$thn_ajaran		= explode('|',$edu_thn_ajaran);
-		
-		
-		
+		if($q_pendidikan->num_rows() > 0 ){
+			$row_pd	= $q_pendidikan->row();
+			
+			$edu_id	= $row_pd->edu_id;
+			$edu_qualify_value	= $row_pd->edu_qualify_value;
+			$edu_qualify_id	= $row_pd->edu_qualify_id;
+			$edu_field_id	= $row_pd->edu_field_id;
+			$edu_grade			= $row_pd->edu_grade;
+			$edu_field_value	= $row_pd->edu_field_value;
+			$edu_thn_ajaran		= $row_pd->edu_thn_ajaran;
+			$edu_instansi		= $row_pd->edu_instansi;
+			$edu_location		= $row_pd->edu_location;
+			
+			$thn_ajaran		= explode('|',$edu_thn_ajaran);
+		}
 	}else{
+		$edu_id				= "-";
 		$edu_qualify_value	= "-";
 		$edu_grade			= "-";
 		$edu_field_value	= "-";
@@ -71,6 +36,34 @@ function selected($a,$b,$c){
 	}
 
 ?>
+<script>
+
+
+$('#save').click(function() {
+	mode	= "<?php echo $mode; ?>";
+	
+	if(mode == 'data'){
+		edu_id	= "<?php echo $edu_id; ?>";
+		control	= "p_data_edu_edit/"+edu_id;
+	}else{
+		control	= "p_data_edu_add";
+	}
+		
+	$.ajax({
+		type: 'POST',
+		url: uri+'pelamar/'+control,
+		data: $('#myForm').serialize(),
+		success: function(data) {
+			$('#msg').html(data);
+			$('#msg').show('slow');
+			
+		}
+		
+	})
+  return false;
+});
+
+</script>
 
 <form method="POST" id="myForm">
 
@@ -166,7 +159,7 @@ function selected($a,$b,$c){
 				<div class="buttons" id="link_button">
 					<a href="#" class="positive" id="save"><!-- class="regular"-->
 						<img src="<?php echo base_url(); ?>media/images/save.png" alt=""> 
-						Update Education
+						Simpan Tingkat Pendidikan
 					</a>
 				</div>
 			</td>

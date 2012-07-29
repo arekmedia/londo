@@ -4,6 +4,7 @@
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <link href="<?php echo base_url(); ?>/media/css/general.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="<?php echo base_url(); ?>/media/development-bundle/themes/base/jquery.ui.all.css">
+<link rel="stylesheet" href="<?php echo base_url(); ?>/media/css/nouislider.css">
 <script src="<?php echo base_url(); ?>/media/development-bundle/jquery-1.6.2.js"></script>
 <script src="<?php echo base_url(); ?>/media/js/function.js"></script>
 <script src="<?php echo base_url(); ?>/media/js/validator.js"></script>
@@ -15,13 +16,30 @@
 <script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.effects.bounce.js"></script>
 
 <script type="text/javascript" src="<?php echo base_url(); ?>/media/js/tiny_mce/jquery.tinymce.js"></script>
+<script src="<?php echo base_url(); ?>media/js/jquery.nouislider.js"></script>
+
+
 <script type="text/javascript">
 var currentTime = new Date();
 var month = currentTime.getMonth() + 1;
 var day = currentTime.getDate();
 var year = currentTime.getFullYear()+1;
 var nextyear = currentTime.getFullYear()+2;
- 
+
+$(function(){
+$("#slider").noUiSlider('init', { scale: [17,50], tracker:
+function(){
+
+lowForS	= $('#slider').noUiSlider('getValue')[0].toFixed(0);
+highForS = $('#slider').noUiSlider('getValue', {point: 'upper'}).toFixed(0)
+$("#vlowForS").val(lowForS);
+$("#vhighForS").val(highForS);
+
+$("#lowForS").text( $('#slider').noUiSlider('getValue')[0].toFixed(0));
+$("#highForS").text( $('#slider').noUiSlider('getValue', {point: 'upper'}).toFixed(0));
+}
+});
+});  
 $(function() {
 	$('textarea.tinymce').tinymce({
 		// Location of TinyMCE script

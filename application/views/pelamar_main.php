@@ -18,15 +18,19 @@ function save_resume(){
 
 function delete_exper(id){
 	
-	$.ajax({
-		type: 'POST',
-		url: uri+'pelamar/p_exper_del/'+id,
-		data: $('#exper').serialize(),
-		success: function(data) {
-			$('#exper_status').html(data);
-			load_exper_list();
+	jConfirm('Hapus Pengalaman Kerja', 'Konfirmasi Tindakan', function(r) {
+		if(r == true){
+			$.ajax({
+				type: 'POST',
+				url: uri+'pelamar/p_exper_del/'+id,
+				data: $('#exper').serialize(),
+				success: function(data) {
+					$('#exper_status').html(data);
+					load_exper_list();
+				}
+			}) 
 		}
-	}) 
+	});
 }
 
 function update_account(){
@@ -58,12 +62,29 @@ function add_exper(){
 	$.ajax({
 		type: 'POST',
 		url: uri+'pelamar/p_exper_add',
-		data: $('#exper').serialize(),
+		data: $('#msg').serialize(),
 		success: function(data) {
-			$('#exper_status').html(data);
+			$('#msg').html(data);
 			load_exper_list();
 		}
 	}) 
+}
+
+function del_edu(id){
+	jConfirm('Hapus Tingkat Pendidikan', 'Konfirmasi Tindakan', function(r) {
+		if(r == true){
+			$.ajax({
+				type: 'POST',
+				url: uri+'pelamar/p_data_edu_del/'+id,
+				data: $('#exper').serialize(),
+				success: function(data) {
+					$('#msg').html(data);
+					load_exper_list();
+				}
+			})
+			$('#edu_'+id).remove();
+		}
+	});
 }
 
 
@@ -107,35 +128,6 @@ function add_exper(){
 		$city_id		= "";
 	}
 	
-	/*[!] Latar Pendidikan*/
-	if($q_pendidikan->num_rows() > 0){
-		$row_pd	= $q_pendidikan->row();
-		
-		$edu_qualify_value	= $row_pd->edu_qualify_value;
-		$edu_qualify_id	= $row_pd->edu_qualify_id;
-		$edu_field_id	= $row_pd->edu_field_id;
-		$edu_grade			= $row_pd->edu_grade;
-		$edu_field_value	= $row_pd->edu_field_value;
-		$edu_thn_ajaran		= $row_pd->edu_thn_ajaran;
-		$edu_instansi		= $row_pd->edu_instansi;
-		$edu_location		= $row_pd->edu_location;
-		
-		$thn_ajaran		= explode('|',$edu_thn_ajaran);
-		
-		
-		
-	}else{
-		$edu_qualify_value	= "-";
-		$edu_grade			= "-";
-		$edu_field_value	= "-";
-		$edu_status			= "-";
-		$edu_thn_ajaran		= "-|-";
-		$edu_instansi		= "-";
-		$edu_location		= "-";
-		$thn_ajaran		= explode('|',$edu_thn_ajaran);
-
-	}
-	
 	/*[!] Resume */
 	if($q_resume->num_rows() > 0){
 		$r_resume = $q_resume->row();
@@ -149,7 +141,6 @@ function add_exper(){
 	<div id="popupContact">		
 		<p id="contactArea"></p>
 	</div>
-
 	<div id="backgroundPopup"></div>
 	<div style="float:left">
 		<ul class="menu">  
@@ -162,7 +153,7 @@ function add_exper(){
 
 	<span class="clear"></span>  
 	<div class="content 1">  
-		<div class="notify" id="notify" onclick="location.reload();" style="display:none">Klik disini untuk reload</div>
+		<div id="msg"></div>
 		<form method="post" name="profileForm" style="padding-top:10px;" id="reg_input">
 			<div>
 				<table>
@@ -210,12 +201,11 @@ function add_exper(){
 									</tr>
 									<tr>
 										<td>provinsi</td>
-										<td>: <?php echo $state_value; ?></span>
-										</td>
+										<td>: <?php echo $state_value; ?></td>
 									</tr>
 									<tr>
 										<td>kota</td>
-										<td>: <?php echo $city_value; ?></span></td>
+										<td>: <?php echo $city_value; ?></td>
 									</tr>
 									<tr>
 										<td>Tgl Lahir</td>
@@ -241,63 +231,63 @@ function add_exper(){
 							<div style="float:left;">
 								<h2 class="top">Latar Pendidikan</h2>
 							</div>
-								<table>
+								<table cellspacing="0">
+									<tbody>
 									<tr>
-										<td width="250px">Pendidikan Terakhir</td>
-										<td>: <span class="tpt" id="tpt" onclick="edit_tpt('edit')"><?php echo $edu_qualify_value; ?></span>
-										<span id="ftpt" style="display:none">
-											<?php 
-												$q_edu_qualify	= $this->edu_m->edu_qualify();
-												
-												if($q_edu_qualify->num_rows() > 0){
-													echo "<select id='stpt' onchange=\"edit_tpt('save')\">";
-													
-													foreach($q_edu_qualify->result() as $r_edu_qualify){
-													
-														echo "<option value='".$r_edu_qualify->edu_qualify_id."' ".selected($r_edu_qualify->edu_qualify_id,$edu_qualify_id,'selected').">".$r_edu_qualify->edu_qualify_value."</option>";
-													
-													}
-													
-													echo "</select>";
-												}
-											
-											?>
-										</span>
+										<th width="350px">Tingkat Pendidikan</th>
+										<th width="350px">Nama Instansi Pendidikan</th>
+										<th width="250px">Tahun Pendidikan</th>
+										<th width="250px">Grade</th>
+										<th width="250px">Action</th>
+									</tr>
+								<?php
+								
+									if($q_pendidikan->num_rows() > 0){
+										//$row_pd	= $q_pendidikan->row();
 										
-										</td>
+										foreach($q_pendidikan->result() as $row_pd){
+										
+										$edu_qualify_value	= $row_pd->edu_qualify_value;
+										$edu_qualify_id	= $row_pd->edu_qualify_id;
+										$edu_field_id	= $row_pd->edu_field_id;
+										$edu_grade			= $row_pd->edu_grade;
+										$edu_field_value	= $row_pd->edu_field_value;
+										$edu_thn_ajaran		= $row_pd->edu_thn_ajaran;
+										$edu_instansi		= $row_pd->edu_instansi;
+										$edu_location		= $row_pd->edu_location;
+										$thn_ajaran		= explode('|',$edu_thn_ajaran);
+									
+										if($edu_qualify_id == '1') $bg_color = '#DAF09E';
+										if($edu_qualify_id == '2') $bg_color = '#9ED0F0';
+										if($edu_qualify_id == '3') $bg_color = '#89A6FA';
+										if($edu_qualify_id == '4') $bg_color = '#89FAB3';
+										if($edu_qualify_id == '5') $bg_color = '#FAB889';
+										if($edu_qualify_id == '6') $bg_color = '#F5AEBD';
+									
+								?>
+									<tr id='edu_<?php echo $row_pd->edu_id; ?>'>
+										<td><?php echo $edu_qualify_value; ?></td>
+										<td><?php echo $edu_instansi; ?> - <?php echo $edu_location; ?></td>
+										<td align='center'><?php echo $thn_ajaran[0]." sampai ".$thn_ajaran[1]; ?></td>
+										<td align='center'><b><?php echo $edu_grade; ?></b></td>
+										<td align='center'><a onmousedown="loadfileid('edu','<?php echo $row_pd->edu_id; ?>')"><img src="<?php echo base_url()."media/images/edit.png"; ?>">&nbsp;</a> <a onmousedown="del_edu('<?php echo $row_pd->edu_id; ?>');"><img src="<?php echo base_url()."media/images/delete.png"; ?>"></a></td>
 									</tr>
-									<tr>
-										<td>CGPA</td>
-										<td>: <span class="cgpa" id="cgpa"><?php echo $edu_grade; ?></span></td>
-									</tr>
-									<tr>
-										<td>Bidang Studi</td>
-										<td>: <span class="bs" id="bs" onclick="edit_bs('edit')"><?php echo $edu_field_value; ?></span>
-										</td>
-									</tr>
-									<tr>
-										<td>Tahun Pendidikan</td>
-										<td>: <span id="sp"  onclick="edit_sp('edit')"><?php echo $thn_ajaran[0]." sampai ".$thn_ajaran[1]; ?></span>
-										</td>
-									</tr>
-									<tr>
-										<td>Nama Universitas / Instansi Pendidikan</td>
-										<td>: <span class="nu" id="nu"><?php echo $edu_instansi; ?></span></td>
-									</tr>
-									<tr>
-										<td>Lokasi</td>
-										<td>: <span class="lo" id="lo"><?php echo $edu_location; ?></span></td>
-									</tr>
+									
+								<?php
+									}
+								}
+								?>
 									<tr>
 										<td colspan='2'>											
 											<div class="buttons" id="link_button">
 												<a href="#" class="positive" onclick="loadfile('latar_pendidikan')"><!-- class="regular"-->
 													<img src="<?php echo base_url(); ?>media/images/education.png" alt=""> 
-													Edit Latar Pendidikan
+													Tambah Tingkat Pendidikan
 												</a>
 											</div>
 										</td>
 									</tr>
+									</tbody>
 
 								</table>
 							<div style="clear:both;height:20px;"></div>
@@ -308,7 +298,7 @@ function add_exper(){
 							<div style="float:left;">
 								<h2 class="top">Penguasaan Bahasa</h2>
 							</div>
-								<table>
+								<table cellspacing="0">
 									<thead>
 										<tr>
 											<th width="200px">Bahasa</th>
@@ -345,8 +335,8 @@ function add_exper(){
 									?>
 										<tr>
 											<td width="200px"><?php echo $lang_values; ?></td>
-											<td align="center" style="color:#FFF;background-color:<?php echo $s_color; ?>"><?php echo $lang_skill_s; ?></td>
-											<td align="center" style="color:#FFF;background-color:<?php echo $w_color; ?>"><?php echo $lang_skill_w; ?></td>
+											<td align="center" style="font-weight:bold;color:<?php echo $s_color; ?>"><?php echo $lang_skill_s; ?></td>
+											<td align="center" style="font-weight:bold;color:<?php echo $w_color; ?>"><?php echo $lang_skill_w; ?></td>
 										</tr>
 
 									<?php
@@ -373,7 +363,7 @@ function add_exper(){
 							<div style="float:left;">
 								<h2 class="top">Skill/Keahlian Khusus</h2>
 							</div>
-								<table>
+								<table cellspacing="0">
 									<thead>
 										<tr>
 											<th width="200px">Keahlian</th>
@@ -381,7 +371,7 @@ function add_exper(){
 											<th width="200px">Tingakat Keahlian</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody style="border-width: 1px 0 1px;">
 										<?php
 											if($q_skill->num_rows() > 0){
 												foreach($q_skill->result() as $r_skill){
@@ -644,6 +634,9 @@ function add_exper(){
 						$q_privacy	= $this->js_m->privacy($par);
 
 						$r_privacy	= $q_privacy->row();
+						
+						if($q_privacy->num_rows() > 0) $priv_val	= $r_privacy->value;
+						if($q_privacy->num_rows() < 1) $priv_val	= "0";
 
 				?>
 
@@ -651,8 +644,8 @@ function add_exper(){
 				<tr>
 					<td width="85%" ><?php echo $r_rule->rule_value; ?></td>
 					<td align="right">
-						<input type="radio" name="<?php echo $r_rule->rule_id; ?>" value="1" <?php echo selected('1',$r_privacy->value,'checked'); ?>> Ya
-						<input type="radio" name="<?php echo $r_rule->rule_id; ?>" value="0" <?php echo selected('0',$r_privacy->value,'checked'); ?>> Tidak
+						<input type="radio" name="<?php echo $r_rule->rule_id; ?>" value="1" <?php echo selected('1',$priv_val,'checked'); ?>> Ya
+						<input type="radio" name="<?php echo $r_rule->rule_id; ?>" value="0" <?php echo selected('0',$priv_val,'checked'); ?>> Tidak
 					</td>
 				</tr>
 				<?php

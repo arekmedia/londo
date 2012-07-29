@@ -24,7 +24,6 @@ class Perusahaan extends CI_Controller {
 		$this->load->view('backend_perusahaan',$data);
 	}
 
-
 	function perusahaan_statistik(){
 
 		$par['user_id']		= $this->session->userdata('userid');
@@ -35,9 +34,18 @@ class Perusahaan extends CI_Controller {
 	}
 
 	function cari_pekerja(){
-		$par['null']			= NULL;
-		$data['q_cari_pekerja']	= $this->js_m->list_pekerja($par);
+		$par['null']		= NULL;
+		$par_post['null']	= NULL;	
 	
+		if($this->input->post('submit') == '1' ){
+			$par_post['']	= "";	
+		
+		}
+	
+		$data['q_edu_field']	= $this->edu_m->edu_field($par);
+		$data['q_edu_qualify']	= $this->edu_m->edu_qualify($par);
+		$data['q_cari_pekerja']	= $this->js_m->list_pekerja($par_post);
+
 		$data['content']		= "perusahaan_cari_pekerja";
 		$data['side']			= "perusahaan_side";
 		$data['base_url']		= $this->config->item('base_url');

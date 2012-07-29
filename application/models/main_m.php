@@ -21,6 +21,7 @@ class Main_m extends CI_Model {
 		foreach($data['q_main_spes']->result() as $spes_rows){ //child job
 			$spes_id	= $spes_rows->spes_id;
 			$data['q_main_spes_child'][$spes_id]	= $this->db->query("SELECT * FROM `jbspecialist` where spes_level='".$spes_id."' ".$spes_limit." ");
+			//echo "SELECT * FROM `jbspecialist` where spes_level='".$spes_id."' ".$spes_limit." ";
 		}
 	return $data;
 	}
@@ -66,7 +67,9 @@ class Main_m extends CI_Model {
 		$data['q_main_pos']	= $this->db->query("SELECT * FROM `jbposition` ");
 		foreach($data['q_main_pos']->result() as $pos_rows){ //child job
 			$pos_id	= $pos_rows->pos_id;
-			$data['q_main_pos_child'][$pos_id]	= $this->db->query("SELECT ss.spes_value,s.spes_id, count( * ) AS byk FROM `jbvacancy` v, `jbposition` p, jbspecialist s, jbspecialist ss WHERE v.pos_id = p.pos_id AND v.spes_id = s.spes_id AND s.spes_level = ss.spes_id and p.pos_id='".$pos_id."' GROUP BY ss.spes_id ");
+//			$vac_id	= $pos_rows->vac_id;
+			$data['q_main_pos_child'][$pos_id]	= $this->db->query("SELECT s.spes_value,s.spes_id, count( * ) AS byk FROM `jbvacancy` v, `jbposition` p, jbspecialist s WHERE v.pos_id = p.pos_id AND v.spes_id = s.spes_id and p.pos_id='".$pos_id."' and v.vac_edate<CURDATE() GROUP BY s.spes_id ");
+			
 		}
 	return $data;
 	}

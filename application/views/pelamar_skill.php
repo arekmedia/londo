@@ -81,9 +81,15 @@
 								<td colspan="4">Masukan Data Baru:</td>
 							</tr>
 							<tr>
+								<td>Keahlian</td>
 								<td><input type='text' id='keahlian' ></td>
-								<td><input type='text' id='lama'></td>
-								<td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Lama Pengalaman</td>
+								<td><input size="3" type='text' id='lama'> Tahun</td>
+								<td>Tingkat / Level
 									<select id="level">
 										<option value='beginner'>beginner</option>
 										<option value='itermediate'>itermediate</option>

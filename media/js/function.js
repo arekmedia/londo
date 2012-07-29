@@ -1,7 +1,16 @@
 var uri	= "http://"+window.location.host+"/bk/";
 
-	$('#msg').click(function(){
-		$('#msg').hide('slow');
+	function confirm(msg,run){
+			jConfirm(msg, 'Konfirmasi Tindakan', function(r) {
+				if(r == true)
+				run;
+			});
+	}
+	
+	$(document).ready(function() {
+		$('#msg').click(function(){
+			$('#msg').hide('slow');
+		});
 	});
 
 	function submitform(){

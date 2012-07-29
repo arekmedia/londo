@@ -10,6 +10,9 @@ class Lowongan_m extends CI_Model {
 		if(array_key_exists('spes_id',$lowongan_p)){
 			$where	.= " and s.spes_id='".$lowongan_p['spes_id']."'";
 		}
+		if(array_key_exists('ragam_id',$lowongan_p)){
+			$where	.= " and s.spes_level='".$lowongan_p['ragam_id']."'";
+		}
 		if(array_key_exists('spes_level',$lowongan_p)){
 			$where	.= " and s.spes_level='".$lowongan_p['spes_level']."'";
 		}
@@ -35,7 +38,7 @@ class Lowongan_m extends CI_Model {
 			$where	.= " and v.status='".$lowongan_p['status']."'";
 		}
 
-		$sql	= "SELECT  s.spes_level,t.temp_url, p.pos_id, cmt.comp_type_value, cm.comp_nama, cm.comp_logo, cm.comp_desc,cm.comp_id, p.pos_level, v.vac_title, v.vac_detail, v.vac_salary_min, v.vac_salary_max, v.vac_id, s.spes_value, s.spes_id, v.vac_sdate, v.vac_edate, c.city_id, c.city_value, st.state_value FROM jbtemplate t, jbstate st, jbcompany_type cmt, jbcompany cm, `jbvacancy` v, jbposition p, jbspecialist s, jbcity c WHERE t.temp_id=v.temp_id and t.temp_id=v.temp_id AND p.pos_id = v.pos_id AND s.spes_id = v.spes_id AND v.comp_id = cm.comp_id AND cmt.comp_type_id = cm.comp_type_id AND st.state_id = c.state_id ".$where." group by v.vac_id ";
+		$sql	= "SELECT  s.spes_level,t.temp_url, p.pos_id, cmt.comp_type_value, cm.comp_nama, cm.comp_logo, cm.comp_desc,cm.comp_id, p.pos_level, v.vac_title, v.vac_detail, v.vac_salary_min, v.vac_salary_max, v.vac_id, s.spes_value, s.spes_id, v.vac_sdate, v.vac_edate, c.city_id, c.city_value, st.state_value FROM jbtemplate t, jbstate st, jbcompany_type cmt, jbcompany cm, `jbvacancy` v, jbposition p, jbspecialist s, jbcity c WHERE t.temp_id=v.temp_id and t.temp_id=v.temp_id AND p.pos_id = v.pos_id AND s.spes_id = v.spes_id AND v.comp_id = cm.comp_id AND cmt.comp_type_id = cm.comp_type_id AND st.state_id = c.state_id ".$where." and v.vac_edate <= CURDATE() and status='publish' group by v.vac_id ";
 
 		if($row == FALSE){
 
@@ -163,6 +166,8 @@ class Lowongan_m extends CI_Model {
 	}
 	
 	function q_related($related){
+		$query	= NULL;
+	
 		if(array_key_exists('related_by',$related) && $related['related_by'] == 'kerja'){
 			$query	= $this->db->query("SELECT spes_level FROM `jbspecialist` where spes_id='".$related['related_data']."'");
 		}	

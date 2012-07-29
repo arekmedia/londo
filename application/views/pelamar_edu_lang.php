@@ -52,8 +52,8 @@
 						<thead>
 							<tr>
 								<th>Bahasa</th>
-								<th>Lisan</th>
-								<th>Tulis</th>
+								<th>Nilai Lisan</th>
+								<th>Nilai Tulis</th>
 								<th>hapus</th>
 							</tr>
 						</thead>
@@ -84,9 +84,9 @@
 		<tr>
 			<td >
 				Masukan Data Baru : <br>
-					<span><input size="30" type='text' id='lang' name='lang' ></span>
-					<span><input maxlength="1" size="20" type='text' id='skill_s' name='skill_s'></span>
-					<span><input maxlength="1" size="20" type='text' id='skill_w' name='skill_w'></span>
+					<div style="clear:both"><div style="float:left;width:20%;line-height:22px">Bahasa </div><input size="30" type='text' id='lang' name='lang' ></div>
+					<div style="clear:both"><div style="float:left;width:20%;line-height:22px">Nilai Lisan </div><input maxlength="1" size="20" type='text' id='skill_s' name='skill_s'></div>
+					<div  style="clear:both"><div style="float:left;width:20%;line-height:22px">Nilai Tulis </div><input maxlength="1" size="20" type='text' id='skill_w' name='skill_w'></div>
 					<span>&nbsp;</span>
 					<div class="buttons" id="link_button">
 						<a href="#" class="positive" onclick="add_lang()"><!-- class="regular"-->
@@ -95,10 +95,10 @@
 						</a>
 					</div>
 					<div style="font-weight:bold;padding-top:20px">Nilai Tulis dan Lisan</div>
-					<span style="padding:3px 10px;" class="failed">Nilai 1 s/d 4 Tidak Menguasai</span>
+					<!-- <span style="padding:3px 10px;" class="failed">Nilai 1 s/d 4 Tidak Menguasai</span>
 					<span style="padding:3px 10px;" class="notify">Nilai 5 s/d 7 Cukup Menguasai</span>
 					<span style="padding:3px 10px;" class="success">Nilai 8 s/d 9 Sangat Menguasai</span>
-					
+					-->
 					
 				<div style="clear:both;height:20px;"></div>
 			</td>
