@@ -1,7 +1,3 @@
-<div id="popupContact">		
-	<p id="contactArea"></p>
-</div>
-<div id="backgroundPopup"></div>
 <?php
 	$msg		= "<div style='float:left;padding:3px 0;'><h2>".$q_num_lowongan." Lowongan Tersedia</h2></div>";
 	$page_uri	= $this->uri->segment(4);
@@ -32,7 +28,6 @@
 			$q_related				= $this->lowongan_m->q_related($r_par);
 			
 			if($q_related !== NULL && $q_related->num_rows() > 0){
-				$msg	.= "<div style='float:left;padding:3px 0;'><h2>Lowongan Terkait</h2></div>";
 				$r_rel					= $q_related->row();
 			
 				if($r_par['related_by'] == 'kerja')
@@ -43,8 +38,12 @@
 				$par['null']	= NULL;
 				$par['page']	= $page_uri;
 				$par['limit']	= $limit;
+				$par['status']		= "publish";
 				$q_lowongan		= $this->lowongan_m->q_lowongan($par);
 				$q_num_lowongan	= $this->lowongan_m->q_lowongan($par,TRUE);
+				
+				if($q_lowongan->num_rows() > 0)
+				$msg	.= "<div style='float:left;padding:3px 0;'><h2>Lowongan Terkait</h2></div>";
 			}
 		}
 	}
@@ -192,7 +191,7 @@
 			</div>
 			</td>		
 		</tr>
-	<?
+	<?php
 		}
 	  }
 	?>

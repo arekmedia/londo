@@ -1,9 +1,9 @@
-<script src="<?php echo base_url(); ?>/media/js/function.js"></script>
-<script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.ui.core.js"></script>
-<script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.ui.widget.js"></script>
+<script src="<?php echo base_url(); ?>media/js/function.js"></script>
+<script src="<?php echo base_url(); ?>media/development-bundle/ui/jquery.ui.core.js"></script>
+<script src="<?php echo base_url(); ?>media/development-bundle/ui/jquery.ui.widget.js"></script>
 
-<script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.ui.datepicker.js"></script>
-<script src="<?php echo base_url(); ?>/media/development-bundle/ui/jquery.effects.bounce.js"></script>
+<script src="<?php echo base_url(); ?>media/development-bundle/ui/jquery.ui.datepicker.js"></script>
+<script src="<?php echo base_url(); ?>media/development-bundle/ui/jquery.effects.bounce.js"></script>
 <script>
 jQuery(document).ready(function() {
   jQuery('#datepicker').datepicker({
@@ -22,8 +22,8 @@ $('#save').click(function() {
 		url: uri+'pelamar/p_profile_edit',
 		data: $('#myForm').serialize(),
 		success: function(data) {
-			$('#msg').html(data);
-			$('#msg').show('slow');
+			$('#msg_profile').html(data);
+			$('#msg_profile').show('slow');
 		}
 		
 	})
@@ -42,7 +42,7 @@ function selected($a,$b,$c){
 ?>
 <h2>Update Data Profile</h2>
 <BR>
-<div id="msg">
+<div id="msg_profile">
 <?php 
 	if(!empty($msg) )
 		echo $msg;

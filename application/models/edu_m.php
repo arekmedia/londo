@@ -31,8 +31,8 @@ class Edu_m extends CI_Model{
 		if(array_key_exists('edu_id',$js_p))
 			$where	.= " and je.edu_id = '".$js_p['edu_id']."'";
 			
-		$query	= $this->db->query("SELECT * FROM jbmaster_edu_qualify jeq, jbmaster_edu_field jef, jbseek js left join jbseek_edu je on js.sk_id = je.sk_id  where je.edu_qualify_id = jeq.edu_qualify_id and je.edu_field_id = jef.edu_field_id ".$where." order by je.edu_qualify_id ");
-			
+		$sql	= "SELECT * FROM jbmaster_edu_qualify jeq, jbmaster_edu_field jef, jbseek js left join jbseek_edu je on js.sk_id = je.sk_id  where je.edu_qualify_id = jeq.edu_qualify_id and je.edu_field_id = jef.edu_field_id ".$where." order by je.edu_qualify_id ";
+		$query	= $this->db->query($sql);
 		return $query;
 	}
 
@@ -44,7 +44,7 @@ class Edu_m extends CI_Model{
 			edu_instansi ='".$par['edu_instansi']."',
 			edu_location ='".$par['edu_location']."',
 			edu_grade ='".$par['edu_grade']."'
-			where edu_id='".$par['edu_id']."'";
+			where edu_id='".$par['edu_id']."' order by edu_qualify_id";
 		$this->db->query($sql);
 	}
 	

@@ -6,11 +6,9 @@ class Main extends CI_Controller {
 	{
 		parent::__construct();
 	}
-
+	
 	function index()
 	{
-		$main_p['comp_limit']	= 20;
-		$data['q_main_company']	= $this->comp_m->q_comp($main_p);
 		$data['content']		= "main";
 		$data['side']			= "main_company";
 		$data['base_url']		= $this->config->item('base_url');
@@ -19,7 +17,11 @@ class Main extends CI_Controller {
 
 	function ragam_lowongan(){
 		$main_p['comp_limit']	= 20;
-		$data		= $this->main_m->q_spes($main_p);
+		$main_p['spes_level']	= '0';
+		$lowongan_p['status']	= "publish";
+		$lowongan_p['limit']	= 5;		
+		$data					= $this->main_m->q_spes($main_p);
+		$data['q_lowongan']		= $this->lowongan_m->q_lowongan($lowongan_p);
 		$this->load->view('main_ragam_lowongan',$data);
 	}
 
@@ -176,6 +178,7 @@ class Main extends CI_Controller {
 			$userid	= $row->user_id;
 			$username	= $row->username;
 			$priv		= $row->priv;
+			$lastlogin		= $row->lastlogin;
 			
 			$this->main_m->ulastlogin($userid);
 			
@@ -183,6 +186,7 @@ class Main extends CI_Controller {
                    'userid'  	=> $userid,
                    'username'	=> $username,
                    'priv'	=> $priv,
+                   'lastlogin'	=> $lastlogin,
                    'logged_in'	=> TRUE
                );
 
@@ -214,17 +218,19 @@ class Main extends CI_Controller {
 			$userid		= $row->user_id;
 			$username	= $row->username;
 			$priv		= $row->priv;
+			$lastlogin	= $row->lastlogin;
 			
-			$this->main_m->ulastlogin($userid);
 			
 			$logindata = array(
                    'userid'  	=> $userid,
+                   'lastlogin'  	=> $lastlogin,
                    'username'	=> $username,
                    'priv'	=> $priv,
                    'logged_in'	=> TRUE
                );
 
 			$this->session->set_userdata($logindata);
+			$this->main_m->ulastlogin($userid);
 			
 			if($priv == 'cm'){				
 				$comp_data['user_id']	= $userid;
@@ -247,7 +253,7 @@ class Main extends CI_Controller {
 				$page	= "pelamar";			
 			}
 			echo "<div class='success'>Please wait...</div>";
-			echo "<script>window.location='".$this->config->item('base_url')."/".$page."'</script>";
+			echo "<script>window.location='".$this->config->item('base_url').$page."'</script>";
 
 			
 		}else{
@@ -319,6 +325,23 @@ class Main extends CI_Controller {
 				return FALSE;
 			}
 		}
+	}
+	
+	function perusahaan(){
+		$limit			= 20;
+		$offset			= $this->uri->segment(3);  
+		$offset			= ( ! is_numeric($offset) || $offset < 1) ? 1 : $offset;
+		$main_p['null'] = NULL;
+		$data['q_main_company_full']	= $this->comp_m->q_comp($main_p);
+
+		$main_p['offset']		= ($offset*$limit)-$limit;
+		$main_p['limit'] 		= $offset*$limit;
+		$data['limit']	= $limit;
+		$data['q_main_company']	= $this->comp_m->q_comp($main_p);
+		$data['content']		= "main_perusahaan";
+		$data['side']			= "main_company";
+		$data['base_url']		= $this->config->item('base_url');
+		$this->load->view('backend',$data);
 	}
 }
 

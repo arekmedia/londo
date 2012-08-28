@@ -9,7 +9,7 @@
 				echo "<b>".$pos_rows->pos_level."</b>";
 				foreach($q_main_pos_child[$pos_rows->pos_id]->result() as $pos_crows ){
 						echo "<div style=\"float:left;width:90%;padding-left:10px;\">";
-						echo "<a href='".base_url()."/lowongan/posisi/".$pos_rows->pos_id."/".$pos_crows->spes_id."/".url_title($pos_rows->pos_level."-".$pos_crows->spes_value).".html'>".$pos_crows->spes_value." (".$pos_crows->byk.")</a>";
+						echo "<a href='".base_url()."lowongan/posisi/".$pos_rows->pos_id."/".$pos_crows->spes_id."/".url_title($pos_rows->pos_level."-".$pos_crows->spes_value).".html'>".$pos_crows->spes_value." (".$pos_crows->byk.")</a>";
 						echo "</div>";
 				}
 				

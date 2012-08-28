@@ -5,7 +5,7 @@
 		<li id="3">Posisi Lowongan</li>  
 	</ul>  
 </div>
-<div style="float:right;padding:5px 20px 0 0;"><a href='<?php echo $base_url; ?>/lowongan'>Lihat Semua Lowongan</a></div>	
+<div style="float:right;padding:5px 20px 0 0;"><a href='<?php echo $base_url; ?>lowongan/all'>Lihat Semua Lowongan</a></div>	
 
 <span class="clear"></span>  
 <div class="content 1">  

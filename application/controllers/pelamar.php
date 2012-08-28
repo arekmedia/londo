@@ -20,11 +20,13 @@ class Pelamar extends CI_Controller {
 	}
 
 	function index()
-	{
-		$main_p['comp_limit']	= 20;
+	{		
+
+		$main_p['null']	= "";
 		$js_p['user_id']		= $this->session->userdata('userid');
 		$js_p['sk_id']			= $this->session->userdata('sk_id');
 
+	
 		//$data				= $this->main_m->q_main($main_p);
 		$data				= $this->main_m->q_spes($main_p);
 		$data['q_data_diri']		= $this->js_m->profile($js_p);
@@ -147,7 +149,7 @@ class Pelamar extends CI_Controller {
 		$par['password_baru']		= mysql_escape_string($this->input->post('password_baru'));
 		$par['cpassword_baru']		= mysql_escape_string($this->input->post('cpassword_baru'));
 		$query						= $this->main_m->check_user($par);
-		if($par['password_baru'] == "" || $par['cpassword_baru'] == ""){
+		if((($par['password_baru'] == "" || $par['cpassword_baru'] == "") && $par['password_lama'] != "")){
 				$this->form_validation->set_message('check_password_jq', "<img src='".base_url()."media/images/warning.png'>&nbsp; Password baru tidak boleh kosong. ");
 				return FALSE;			
 		}
@@ -256,7 +258,7 @@ class Pelamar extends CI_Controller {
 			echo "<div id='msg'><div class='failed'>".validation_errors()."</div></div>";
 		}else{
 			$this->js_m->add_exper($par);
-			echo "<div id='msg'><div class='success'>Data Berhasil Diubah</div></div>";
+			echo "<div id='msg'><div class='success'>Data Berhasil Ditambahkan</div></div>";
 		}
 		
 	}
@@ -430,7 +432,6 @@ class Pelamar extends CI_Controller {
 	[!] Resume 
 	************************************/
 	function p_resume_text(){
-		$par['sk_id']		= $this->session->userdata('sk_id');	
 		$par['resume_text']		= $this->input->post('resume_text');	
 		if($this->input->post('simpan_resume') == "1"){
 			$this->form_validation->set_rules('resume_text', 'Resume', 'required');
@@ -439,6 +440,120 @@ class Pelamar extends CI_Controller {
 				echo "<div id='msg'><div class='success'>Resume Lamaran Pekerjaan Berhasil Diubah</div></div>";
 			}
 		}
+	}
+	
+	/************************************
+	[!] Info Lowongan Terbaru
+	************************************/
+	function info_lowongan(){
+
+		$js_p['sk_id']			= $this->session->userdata('sk_id');
+		$q_info_lowongan		= $this->js_m->q_info_lowongan($js_p);
+		if($q_info_lowongan->num_rows() > 0){
+			$r_lowngan	= $q_info_lowongan->row();
+			
+			$lowongan_p['spes_in']	= $r_lowngan->spes_list;
+		}
+
+		$lowongan_p['status']	= "publish";
+
+		$par['null']			= NULL;
+		$data				= $this->main_m->q_spes($par);
+		$data['q_state']		= $this->main_m->q_state();
+		$page_uri	= $this->uri->segment(3);
+
+		if(is_numeric($page_uri) == FALSE) $page_uri = 1;
+			$lowongan_p['page']	= $page_uri;
+
+		$lowongan_p['limit']		= 20;		
+		$data['q_lowongan']		= $this->lowongan_m->q_lowongan($lowongan_p);
+
+		$data['limit']		= $lowongan_p['limit'];
+		$data['q_num_lowongan']	= $this->lowongan_m->q_lowongan($lowongan_p,TRUE);
+
+		$logged_in	= $this->session->userdata('logged_in');
+		$priv		= $this->session->userdata('priv');
+
+		if($logged_in == TRUE && $priv == "js"){
+			$data['side']	= "pelamar_side";
+			$backend		= "backend_pelamar";
+		}else{
+			$data['side']	= "lowongan_related";
+			$backend		= "backend";
+		}
+
+		$data['content']	= "pelamar_info_lowongan";
+		$data['side']		= "pelamar_side";
+		$data['base_url']	= $this->config->item('base_url');
+		$this->load->view('backend_pelamar',$data);
+	}
+
+	function info_lowongan_setting(){
+	
+		$par['spes_level']	= 0;
+		$par['sk_id']		= $this->session->userdata('sk_id');	
+
+		$data['q_spes']		= $this->main_m->q_spes($par);
+		$data['q_info_lowongan']		= $this->js_m->q_info_lowongan($par);
+		$data['content']	= "pelamar_info_lowongan_setting";
+		$data['side']		= "pelamar_side";
+		$data['base_url']	= $this->config->item('base_url');
+		$this->load->view('backend_pelamar',$data);
+	}
+	
+	function get_spes(){	
+		$par['spes_level']	= $this->input->post('spes_id');
+		$par['not_in']		= $this->input->post('myspeslist');
+		$q_spes				= $this->main_m->q_spes($par);
+		
+		if($q_spes['q_main_spes']->num_rows() > 0){
+			foreach($q_spes['q_main_spes']->result() as $r_spes){
+				echo "<div id='spes".$r_spes->spes_id."' style='float:left;width:300px;padding:3px 0'><a href='#' onclick=\"take_spes('".$r_spes->spes_id."','".$r_spes->spes_value."')\">".$r_spes->spes_value."</a></div>";
+			}
+		}else{
+			echo "tidak ada data yang dapat ditampilkan";
+		}
+	}
+	
+	function submit_spes(){
+		$satuan				= "1000000";
+	
+		$par['sk_id']		= $this->session->userdata('sk_id');	
+		$par['gaji_min']	= $this->input->post('vlowForS')*$satuan;
+		$par['gaji_max']	= $this->input->post('vhighForS')*$satuan;
+		$par['myspeslist']	= $this->input->post('myspeslist');
+		
+		if($par['myspeslist'] !== '0'){
+			$this->js_m->set_info_lowongan($par);
+			echo "<div class='success'>Daftar Lowongan Terpilih Berhasil Dimasukan</div>";
+		}else{
+			echo "<div class='failed'>Daftar Lowongan Terpilih Tidak Boleh Kosong</div>";
+		}
+		
+	}
+	
+	/************************************
+	[!] Status Lowongan 
+	************************************/
+	function status_lamaran(){
+		$limit			= 20;
+		$offset			= $this->uri->segment(3);  
+		$offset			= ( ! is_numeric($offset) || $offset < 1) ? 1 : $offset;
+
+		$par['sk_id']	= $this->session->userdata('sk_id');	
+		
+		$data['limit']	= $limit;
+		$data['page_uri']	= $offset;
+		$data['q_lamaran_full']	= $this->lowongan_m->lamaran($par);
+
+		$par['offset']		= ($offset*$limit)-$limit;
+		$par['limit'] 		= $offset*$limit;
+		$data['q_lamaran']	= $this->lowongan_m->lamaran($par);
+		
+		$data['content']	= "pelamar_status_lamaran";
+		$data['side']		= "pelamar_side";
+		$data['base_url']	= $this->config->item('base_url');
+		$this->load->view('backend_pelamar',$data);
 	}
 	
 }

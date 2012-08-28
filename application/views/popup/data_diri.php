@@ -33,7 +33,7 @@
 
 	
 ?>
-<script src="<?php echo $base_url; ?>/media/js/function.js"></script>
+<script src="<?php echo $base_url; ?>media/js/function.js"></script>
 	<div style="clear:right;padding-top:10px;"></div>
 	<div style="float:left;padding-left:20px">
 		<table width="100%">

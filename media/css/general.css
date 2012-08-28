@@ -1,13 +1,12 @@
-
 @CHARSET "UTF-8";
 /******* GENERAL RESET *******/
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em,
 font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, form, label, table, caption, tbody,
- tfoot, thead, tr, th, td {
+ tfoot, thead, tr, th, td, select, input {
 border:0pt none;
 font-family:inherit;
-font-size: 12px;
-font-family: Arial,Helvetica,Verdana;
+font-size: 11px;
+font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
 font-style:inherit;
 font-weight:inherit;
 margin:0pt;
@@ -15,13 +14,9 @@ padding:0pt;
 vertical-align:baseline;
 }
 body{
- 	line-height:20px;
-	font-size: 12px;
-	font-family: Arial,  Verdana, Helvetica, sans-serif;
-	margin: 0; 
-	padding: 0;
+ 	line-height:1.5;
+	margin:0pt;
 	cursor:default;
-	text-align: center; 
 }
 
 h1{
@@ -33,7 +28,6 @@ h1{
 }
 
 h2 { 
-	//padding:10px 0;
 	font-size: 20px;
 	color:#333333; 
 	font-family: Calibri,"DroidSans",Helvetica,Arial,sans-serif;
@@ -62,7 +56,6 @@ th{
 td{
     border-style: solid;
     margin: 0;
-    padding: 4px;
 }
 
 tr .grey{
@@ -116,7 +109,7 @@ a:active  {color:#0891BF;text-decoration:none;}
 
 #container{
 	padding:10px 10px 10px 10px;
-	height:10px;
+	height:15px;
 	background:  repeat-x scroll 0 0 #1A5DBA;
 
 }
@@ -261,14 +254,17 @@ a:active  {color:#0891BF;text-decoration:none;}
     color: #1A5DBA;  
 }  
 
-#box #bar{
+#box  #bar{
 	font-weight:bold;
 	padding:5px 10px;
     background-color:#1A5DBA;
- 	box-shadow: 1px -2px 2px #888888;
- 	-moz-box-shadow: 1px -2px 2px #888888;
- 	-webkit-box-shadow: 1px -2px 2px #888888;
+ 	box-shadow: 2px -3px 3px #BDBDBD;
 	color:#FFF;
+	border-radius:3px;
+}
+
+#box #bar.green{
+    background-color:#85BA1A;
 }
 
 #box .content{  
@@ -344,6 +340,19 @@ a:active  {color:#0891BF;text-decoration:none;}
     text-shadow: 0 1px rgba(0, 0, 0, 0.1);
     text-transform: uppercase;
     width: 100px;
+}
+
+#container  .button_search_small {
+    background-color: #D14836;
+    background-image: -moz-linear-gradient(center top , #DD4B39, #D14836);
+    border: 1px solid transparent;
+    color: white;
+    height: 16px;
+    padding-bottom: 10px;
+    margin-left: 10px;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    width: 80px;
 }
 
 #main  .button_login {
@@ -479,7 +488,7 @@ input[type=text],input[type=password],select{
 *				Message
 ***********************************************/
 #msg{
-	padding:10px 0;
+	padding:0;
 }
 
 .failed{
@@ -685,14 +694,14 @@ button.regular, .buttons a.regular{
 }
 
 .buttonGreen:hover{
-	background: -moz-linear-gradient(center top , #69B33E 0pt, #79CC49) repeat scroll 0 0 transparent;
+	background: -webkit-linear-gradient(center top , #69B33E 0pt, #79CC49) repeat scroll 0 0 transparent;-moz-linear-gradient(center top , #69B33E 0pt, #79CC49) repeat scroll 0 0 transparent;
 	color: #FFFFFF;
 	text-decoration: none;
 }
 
 .buttonSearch, .buttonSearch:visited, .buttonSearch:active {
 	color: #EEE;
-	background: -moz-linear-gradient(center top , #7CCF4C 0pt, #62A33C) repeat scroll 0 0 transparent;
+	background: -moz-linear-gradient(center top , #7CCF4C 0pt, #62A33C) repeat scroll 0 0 transparent;-webkit-linear-gradient(center top , #7CCF4C 0pt, #62A33C) repeat scroll 0 0 transparent;
 	border: 0 solid #000000;
 	border-radius: 4px 4px 4px 4px;
 	box-shadow: 0 1px 1px #774F00;
@@ -704,7 +713,7 @@ button.regular, .buttons a.regular{
 }
 
 .buttonSearch:hover{
-	background: -moz-linear-gradient(center top , #69B33E 0pt, #79CC49) repeat scroll 0 0 transparent;
+	background: -moz-linear-gradient(center top , #69B33E 0pt, #79CC49) repeat scroll 0 0 transparent;-webkit-linear-gradient(center top , #69B33E 0pt, #79CC49) repeat scroll 0 0 transparent;
 	color: #FFFFFF;
 	text-decoration: none;
 }
@@ -908,4 +917,57 @@ div.paging span.prevnext a:hover {
 	height:120px;
 	border-radius:5px;
 	box-shadow: 0 8px 6px -7px black;
+}
+
+/***********************
+* notifikasi buble
+***********************/
+#noti_Container {
+	margin:0;
+    padding:0;
+    position:relative;     /* This is crucial for the absolutely positioned element */
+    width:16px;
+    height:16px;
+}
+.noti_bubble {
+    position:absolute;    /* This breaks the div from the normal HTML document. */
+    top: -3px;
+    right:-82px;
+    padding:0 5px;
+    background-color:red; /* you could use a background image if you'd like as well */
+    color:white;
+    font-weight:bold;
+    font-size:0.75em;
+
+    /* The following is CSS3, but isn't crucial for this technique to work. */
+    /* Keep in mind that if a browser doesn't support CSS3, it's fine! They just won't have rounded borders and won't have a box shadow effect. */
+    /* You can always use a background image to produce the same effect if you want to, and you can use both together so browsers without CSS3 still have the rounded/shadow look. */
+    border-radius:5px;
+    box-shadow:1px 1px 1px gray;
+}
+
+/******************************
+* Label
+******************************/
+.green_tag {
+    background-color: #2BAD55;
+}
+.grey_tag {
+    background-color: #AAADAB;
+}
+.orange_tag {
+    background-color: #F58300;
+}
+.red_tag {
+    background-color: #C44141;
+}
+.Tag {
+    border-radius: 0.2ex 0.2ex 0.2ex 0.2ex;
+    padding: 1px 6px 2px;
+}
+.Tag {
+    border-radius: 2px 2px 2px 2px;
+    color: #FFFFFF;
+    line-height: 14px;
+    padding: 1px 4px;
 }

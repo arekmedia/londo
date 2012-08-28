@@ -9,7 +9,7 @@ var uri	= "http://"+window.location.host+"/bk/";
 	
 	$(document).ready(function() {
 		$('#msg').click(function(){
-			$('#msg').hide('slow');
+			$('#msg').html('');
 		});
 	});
 
@@ -44,48 +44,6 @@ var uri	= "http://"+window.location.host+"/bk/";
 		return false;
 	}
 
-	function login_apply(form){
-		var username	= form.username_apply.value;
-		var password	= form.password_apply.value;
-		var vac_id		= form.vac_id.value;
-		$('#message_apply').html("<img src='"+uri+"media/images/loading.gif'> Loading...");
-		$.ajax({
-			type: 'POST',
-			url: uri+'main/login_apply',
-			data: 'username='+username+'&password='+password,
-			success: function(data) {
-				if(data == "1"){
-					$('#message_login').html("<div class='success'>Please wait...</div>"); 	
-					setTimeout(function() {loadfileid('apply',vac_id);},1250);
-					
-				}else{
-					$('#message_login').html("<div class='failed'>Login Gagal</div>");
-				}
-
-				//alert(data);		
-			}
-		}) 
-		return false;
-	}
-	
-	function apply(form){
-		var vac_id	= form.vac_id.value;
-		$.ajax({
-			type: 'POST',
-			url: uri+'lowongan/do_apply',
-			data: 'vac_id='+vac_id,
-			success: function(data) {
-				if(data == "1"){
-					$('#message_apply').html("<div class='success'>Lamaran berhasil terkirim</div>"); 	
-				}else{
-					$('#message_apply').html("<div class='notify'>Lamaran sudah terkirim</div>");
-				}
-
-				//alert(data);		
-			}
-		}) 
-		return false;		
-	}
 	
 	function get_city_js(form){
 		var stateid_js = form.stateid_js.value;

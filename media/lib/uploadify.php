@@ -128,7 +128,7 @@ if (!empty($_FILES)) {
 		$sql	= "update jbseek set sk_photo='".$filename."' where sk_id='".$_REQUEST['sesid']."'";
 		mysql_query($sql);
    
-		echo "http://".$_SERVER['SERVER_NAME']."/bk/media/upload/photo/thumb/".$filename;
+		echo "http://".$_SERVER['SERVER_NAME'].$targetFolder."/photo/thumb/".$filename;
 	} else {
 		echo 'Invalid file type.';
 	}

@@ -1,31 +1,53 @@
- <div id="fb-root"></div>
- <script src="http://connect.facebook.net/en_US/all.js"></script>
- <script>
-FB.init({
-	appId  : '337893626237880',
-	status : true, // check login status
-	cookie : true, // enable cookies to allow the server to access the session
-	xfbml  : true  // parse XFBML
-});
+<script>
+	function login_apply(form){
+		var username	= form.username_apply.value;
+		var password	= form.password_apply.value;
+		var vac_id		= form.vac_id.value;
+		$('#message_login').html("<img src='"+uri+"media/images/loading.gif'> Loading...");
+		$.ajax({
+			type: 'POST',
+			url: uri+'main/login_apply',
+			data: 'username='+username+'&password='+password,
+			success: function(data) {
+				if(data == "1"){
+					$('#message_login').html("<div class='success'>Please wait...</div>"); 	
+					setTimeout(function() {loadfileid('apply',vac_id);},1250);
+					
+				}else{
+					$('#message_login').html("<div class='failed'>Login Gagal</div>");
+				}
+
+				//alert(data);		
+			}
+		}) 
+		return false;
+	}
+	
+	function apply(form){
+		var vac_id	= form.vac_id.value;
+		$.ajax({
+			type: 'POST',
+			url: uri+'lowongan/do_apply',
+			data: 'vac_id='+vac_id,
+			success: function(data) {
+				if(data == "1"){
+					$('#message_apply').html("<div class='success'>Lamaran berhasil terkirim</div>"); 	
+				}else{
+					$('#message_apply').html("<div class='notify'>Lamaran sudah terkirim</div>");
+				}
+
+				//alert(data);		
+			}
+		}) 
+		return false;		
+	}
+
 </script>
+
 <form method="POST" id="form" name="form">
 	<h2 style="color:#639C27">Ajukan Lamaran Pekerjaan Saya</h2>
 	<div style="float:left;width:55%;margin:10px;">
 		<div id="message_apply"></div>
-<!-- <fb:registration 
-	fields="[
-		{'name':'name'},
-		{'name':'email'},
-		{'name':'location'},
-		{'name':'gender'},
-		{'name':'birthday'},
-		{'name':'newsletter',       'description':'Subscribe to Our Newsletter ', 'type':'checkbox',  'default':'checked'},
-
-	]"
-	redirect-uri="http://lowongan.biruku.com//main/register"
-	width="530">
-</fb:registration>-->
-
 		&nbsp;
 	</div>
 	<div style="float:left;padding:0 10px;border-left: 1px solid #EEEEEE;">

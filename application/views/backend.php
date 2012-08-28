@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <HTML>
 <HEAD>
 <TITLE>Jobs</TITLE>
@@ -133,8 +134,19 @@ function selected($a,$b,$c){
 
 ?>
 <BODY>
+<div id="popupContact">		
+<a id="popupContactClose">x</a>  
+	<p id="contactArea"></p>
+</div>
+<div id="backgroundPopup"></div>
+
 <div id="centered">
 	<div id="container">
+		<form method="POST" action="<?php echo base_url()."lowongan/search"; ?>">
+			<div style="float:right">
+				<b style="color:#FFFFFF">Search </b><input type="text" name="search"> <input type="submit" class="button_search_small" value="Cari">
+			</div>
+		</form>
 	</div>
 	<div style="clear:both"></div>
 	<div id="content">
@@ -147,7 +159,7 @@ function selected($a,$b,$c){
 			<div style="float:left;margin-left:50px;">
 				<ul id="menu">
 					<li class="login" >
-						<img style="float:left;" alt="" src="<?php echo base_url(); ?>/media/images/menu_left.png" onClick="login_dock('main')"/>
+						<img style="float:left;" alt="" src="<?php echo base_url(); ?>media/images/menu_left.png" onClick="login_dock('main')"/>
 						<ul id="main" style="display:none">
 							<li>
 							<div id="message"></div>
@@ -160,21 +172,21 @@ function selected($a,$b,$c){
 								</form>
 							</li>
 							<li class="last">
-								<img class="corner_left" alt="" src="<?php echo base_url(); ?>/media/images/corner_blue_left.png"/>
-								<img class="middle" alt="" src="<?php echo base_url(); ?>/media/images/dot_blue.png"/>
-								<img class="corner_right" alt="" src="<?php echo base_url(); ?>/media/images/corner_blue_right.png"/>
+								<img class="corner_left" alt="" src="<?php echo base_url(); ?>media/images/corner_blue_left.png"/>
+								<img class="middle" alt="" src="<?php echo base_url(); ?>media/images/dot_blue.png"/>
+								<img class="corner_right" alt="" src="<?php echo base_url(); ?>media/images/corner_blue_right.png"/>
 							</li>
 						</ul>
 						
 					</li>
 					<li>
-						<a href="<?php echo base_url(); ?>/main/register"><img style="float:right;" alt="" src="<?php echo base_url(); ?>/media/images/register.png"/></a>
+						<a href="<?php echo base_url(); ?>main/register"><img style="float:right;" alt="" src="<?php echo base_url(); ?>media/images/register.png"/></a>
 					</li>
 				</ul>
 			</div>
 		</div>
 		
-		<?
+		<?php
 			}else{
 		?>
 		<!-- Logout Button -->
@@ -187,12 +199,22 @@ function selected($a,$b,$c){
 				</div>
 			</div>
 			<div style="float:right;">
+				<?php if($this->session->userdata('priv') == 'cm'){?>
 				<div class="buttons" id="link_button">
-					<a class="standart" href="<?php echo base_url();?>pelamar/"><!-- class="regular"-->
+					<a class="standart" href="<?php echo base_url();?>perusahaan/"><!-- class="regular"-->
+						<img src="<?php echo base_url(); ?>media/images/home.png" alt=""> 
+						Halaman Perusahaan
+					</a>
+				</div>
+				<?php }else if($this->session->userdata('priv') == 'js'){?>
+
+				<div class="buttons" id="link_button">
+					<a class="standart" href="<?php echo base_url();?>Pelamar/"><!-- class="regular"-->
 						<img src="<?php echo base_url(); ?>media/images/home.png" alt=""> 
 						Halaman Pelamar
 					</a>
 				</div>
+				<?php } ?>
 			</div>
 		<?php
 			}

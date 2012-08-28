@@ -1,23 +1,26 @@
+<!DOCTYPE html>
 <HTML>
 <HEAD>
 <TITLE>Jobs</TITLE>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<link href="<?php echo base_url(); ?>/media/css/general.css" rel="stylesheet" type="text/css">
-<link href="<?php echo base_url(); ?>/media/css/switch.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="<?php echo base_url(); ?>/media/development-bundle/themes/base/jquery.ui.all.css">
-<script src="<?php echo base_url(); ?>/media/development-bundle/jquery-1.6.2.js"></script>
-<script src="<?php echo base_url(); ?>/media/js/jalert/jquery.alerts.js"></script>
-<script src="<?php echo base_url(); ?>/media/js/function.js"></script>
-<script src="<?php echo base_url(); ?>/media/js/validator.js"></script>
-<script src="<?php echo base_url(); ?>/media/js/popup.js"></script>
+<link href="<?php echo base_url(); ?>media/css/general.css" rel="stylesheet" type="text/css">
+<link href="<?php echo base_url(); ?>media/css/switch.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="<?php echo base_url(); ?>media/development-bundle/themes/base/jquery.ui.all.css">
+<link rel="stylesheet" href="<?php echo base_url(); ?>media/css/nouislider.css">
+<script src="<?php echo base_url(); ?>media/development-bundle/jquery-1.6.2.js"></script>
+<script src="<?php echo base_url(); ?>media/js/jalert/jquery.alerts.js"></script>
+<script src="<?php echo base_url(); ?>media/js/function.js"></script>
+<script src="<?php echo base_url(); ?>media/js/validator.js"></script>
+<script src="<?php echo base_url(); ?>media/js/popup.js"></script>
 
-<link href="<?php echo base_url(); ?>/media/css/jalert/jquery.alerts.css" type="text/css" rel="stylesheet" />
-<link href="<?php echo base_url(); ?>/media/css/uploadify.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="<?php echo base_url(); ?>/media/js/uploadify/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>/media/js/uploadify/swfobject.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>/media/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
+<link href="<?php echo base_url(); ?>media/css/jalert/jquery.alerts.css" type="text/css" rel="stylesheet" />
+<link href="<?php echo base_url(); ?>media/css/uploadify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="<?php echo base_url(); ?>media/js/uploadify/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>media/js/uploadify/swfobject.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>media/js/uploadify/jquery.uploadify.v2.1.4.min.js"></script>
 
-<script type="text/javascript" src="<?php echo base_url(); ?>/media/js/tiny_mce/jquery.tinymce.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>media/js/tiny_mce/jquery.tinymce.js"></script>
+<script src="<?php echo base_url(); ?>media/js/jquery.nouislider.js"></script>
 <script type="text/javascript">
 function load_exper_list(){
 	$.ajax({
@@ -44,7 +47,7 @@ $(function() {
 	
 	$('textarea.tinymce').tinymce({
 		// Location of TinyMCE script
-		script_url : '<?php echo base_url(); ?>/media/js/tiny_mce/tiny_mce.js',
+		script_url : '<?php echo base_url(); ?>media/js/tiny_mce/tiny_mce.js',
 
 		// General options
 		theme : "advanced",
@@ -163,25 +166,36 @@ function selected($a,$b,$c){
 			</div>
 		</div>
 		<div style="float:right;">
-			<div class="buttons" id="link_button">
-				<a class="standart" href="<?php echo base_url();?>pelamar/"><!-- class="regular"-->
-					<img src="<?php echo base_url(); ?>media/images/home.png" alt=""> 
-					Halaman Pelamar
-				</a>
-			</div>
+				<?php if($this->session->userdata('priv') == 'cm'){?>
+				<div class="buttons" id="link_button">
+					<a class="standart" href="<?php echo base_url();?>perusahaan/"><!-- class="regular"-->
+						<img src="<?php echo base_url(); ?>media/images/home.png" alt=""> 
+						Halaman Perusahaan
+					</a>
+				</div>
+				<?php }else if($this->session->userdata('priv') == 'js'){?>
+
+				<div class="buttons" id="link_button">
+					<a class="standart" href="<?php echo base_url();?>pelamar/"><!-- class="regular"-->
+						<img src="<?php echo base_url(); ?>media/images/home.png" alt=""> 
+						Halaman Pelamar
+					</a>
+				</div>
+				<?php } ?>
 		</div>
 		<div id="box">
 			<div style="clear:both;">
-			<div id="container"> 
-				
-				<?php $this->load->view($content); ?>
+				<div id="container"> 
+					
+					<?php $this->load->view($content); ?>
 
-			</div>
-			
-			<div id="cright">
-				<?php $this->load->view($side); ?>
-			</div>
-		</div> 
+				</div>
+				
+				<div id="cright">
+					<?php $this->load->view($side); ?>
+				</div>
+			</div> 
+		</div>
     </div>
 	<div id="footer">
 	</div>

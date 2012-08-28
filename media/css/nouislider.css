@@ -1,0 +1,56 @@
+.sliderbar			{
+	width:				300px;
+	border:				1px solid #CCC;
+	height:				8px;
+	border-radius:			4px;
+	background:			#EEE;
+}
+
+/* This class targets both handles. You only need to set height and width. */
+.noUi_handle    		{
+	height:				8px;
+	width:				8px;
+}
+
+/* The bar between the two handles. Only a height is critical. */
+.noUi_midBar			{
+	height:				8px;
+}
+
+/* Feel free, however, to use any styling you want. */
+.noUi_midBar			{
+	background:			#2673AB;
+	background-image:		linear-gradient(bottom, rgb(94,153,196) 30%, 
+						rgb(38,116,171) 81%);
+	background-image:		-o-linear-gradient(bottom, rgb(94,153,196) 30%, 
+						rgb(38,116,171) 81%);
+	background-image:		-moz-linear-gradient(bottom, rgb(94,153,196) 30%, 
+						rgb(38,116,171) 81%);
+	background-image:		-webkit-linear-gradient(bottom, rgb(94,153,196) 30%, 
+						rgb(38,116,171) 81%);
+	background-image:		-ms-linear-gradient(bottom, rgb(94,153,196) 30%, 
+						rgb(38,116,171) 81%);
+	background-image:		-webkit-gradient( linear, left bottom, left top, 
+						color-stop(0.3, rgb(94,153,196)), 
+						color-stop(0.81, rgb(38,116,171)) );
+}
+
+/* The look of the slider knobs. They are best positioned absolutely. */
+.noUi_sliderKnob		{
+	z-index: 			5;
+	width:				16px;
+	height:				16px;
+	position:			absolute;
+	top:				-5px;
+	left:				-5px;
+	border:				1px solid #CCC;
+	border-radius:			5px;
+	background:			#EEE;
+}
+
+/* The knobs can look different when hovered or being moved. */
+.noUi_sliderKnob:hover,
+.noUi_activeHandle		{
+	background:			#adcbe1;
+	border-color:			#2673AB;
+}

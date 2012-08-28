@@ -117,7 +117,7 @@ function selected($a,$b,$c){
 			</td>
 		</tr>
 		<tr>
-			<td>Spesialisasi / Posisi </td>
+			<td>Spesialisasi </td>
 			<td>&nbsp; 	
 				<select name="spes" id="spes">
 				<?php

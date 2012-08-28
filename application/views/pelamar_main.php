@@ -62,9 +62,9 @@ function add_exper(){
 	$.ajax({
 		type: 'POST',
 		url: uri+'pelamar/p_exper_add',
-		data: $('#msg').serialize(),
+		data: $('#exper').serialize(),
 		success: function(data) {
-			$('#msg').html(data);
+			$('#exper_status').html(data);
 			load_exper_list();
 		}
 	}) 
@@ -236,6 +236,7 @@ function del_edu(id){
 									<tr>
 										<th width="350px">Tingkat Pendidikan</th>
 										<th width="350px">Nama Instansi Pendidikan</th>
+										<th width="350px">Jurusan / Bidang Studi</th>
 										<th width="250px">Tahun Pendidikan</th>
 										<th width="250px">Grade</th>
 										<th width="250px">Action</th>
@@ -255,6 +256,7 @@ function del_edu(id){
 										$edu_thn_ajaran		= $row_pd->edu_thn_ajaran;
 										$edu_instansi		= $row_pd->edu_instansi;
 										$edu_location		= $row_pd->edu_location;
+										$edu_field		= $row_pd->edu_field_value;
 										$thn_ajaran		= explode('|',$edu_thn_ajaran);
 									
 										if($edu_qualify_id == '1') $bg_color = '#DAF09E';
@@ -268,6 +270,7 @@ function del_edu(id){
 									<tr id='edu_<?php echo $row_pd->edu_id; ?>'>
 										<td><?php echo $edu_qualify_value; ?></td>
 										<td><?php echo $edu_instansi; ?> - <?php echo $edu_location; ?></td>
+										<td><?php echo $edu_field; ?></td>
 										<td align='center'><?php echo $thn_ajaran[0]." sampai ".$thn_ajaran[1]; ?></td>
 										<td align='center'><b><?php echo $edu_grade; ?></b></td>
 										<td align='center'><a onmousedown="loadfileid('edu','<?php echo $row_pd->edu_id; ?>')"><img src="<?php echo base_url()."media/images/edit.png"; ?>">&nbsp;</a> <a onmousedown="del_edu('<?php echo $row_pd->edu_id; ?>');"><img src="<?php echo base_url()."media/images/delete.png"; ?>"></a></td>

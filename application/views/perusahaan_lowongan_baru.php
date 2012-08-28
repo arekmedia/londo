@@ -66,6 +66,7 @@
 			success: function(data) {
 				//alert($('#lowbaru').serialize());
 				$('#msg').html(data);
+				$('#vac_title').val('');
 			}
 		})
 	}
@@ -92,12 +93,6 @@
 	<a class="positive" href="#" onclick="create_lowongan();"><!-- class="regular"-->
 		<img src="<?php echo base_url(); ?>media/images/add.png" alt=""> 
 		Posting Sekarang
-	</a>
-</div>
-<div class="buttons" id="link_button" style="float:right">
-	<a class="standart" href="#" onclick="create_lowongan();"><!-- class="regular"-->
-		<img src="<?php echo base_url(); ?>media/images/icon_document.gif" alt=""> 
-		List Lowongan
 	</a>
 </div>
 <div style="clear:both"></div>

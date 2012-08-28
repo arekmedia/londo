@@ -17,11 +17,29 @@ class Main_m extends CI_Model {
 			$location_limit	= "LIMIT ".$main_p['location_limit'];
 		}
 
-		$data['q_main_spes']	= $this->db->query("SELECT * FROM `jbspecialist` where spes_level='0' ".$spes_limit." ");	//parent job
-		foreach($data['q_main_spes']->result() as $spes_rows){ //child job
-			$spes_id	= $spes_rows->spes_id;
-			$data['q_main_spes_child'][$spes_id]	= $this->db->query("SELECT * FROM `jbspecialist` where spes_level='".$spes_id."' ".$spes_limit." ");
-			//echo "SELECT * FROM `jbspecialist` where spes_level='".$spes_id."' ".$spes_limit." ";
+		$where	= "";
+		if(!empty($main_p['spes_id']) && $main_p['spes_id'] != '')
+			$where	.=	" and spes_id='".$main_p['spes_id']."'";
+		if(!empty($main_p['not_in']) && $main_p['not_in'] != '0')
+			$where	.=	" and spes_id NOT IN (".$main_p['not_in'].")";
+		if(!empty($main_p['in']) && $main_p['in'] != '0')
+			$where	.=	" and spes_id IN (".$main_p['in'].")";
+			
+		if(array_key_exists('spes_level',$main_p)){
+			$where	.=	" and spes_level='".$main_p['spes_level']."'";
+		}
+		//if($main_p['spes_level'] != '')
+		//else
+		//	$where	.= " and spes_level='0' ";
+		
+		$data['q_main_spes']	= $this->db->query("SELECT * FROM `jbspecialist` where 1 ".$where." ".$spes_limit." ");	//parent job
+		//echo "SELECT * FROM `jbspecialist` where 1 ".$where." ".$spes_limit." ";
+		if($data['q_main_spes']->num_rows() > 0){
+			foreach($data['q_main_spes']->result() as $spes_rows){ //child job
+				$spes_id	= $spes_rows->spes_id;
+				$data['q_main_spes_child'][$spes_id]	= $this->db->query("SELECT * FROM `jbspecialist` where spes_level='".$spes_id."' ".$spes_limit." ");
+				//echo "SELECT * FROM `jbspecialist` where spes_level='".$spes_id."' ".$spes_limit." ";
+			}
 		}
 	return $data;
 	}
@@ -97,6 +115,19 @@ class Main_m extends CI_Model {
 	{
 		$where	="";
 		$query	= $this->db->query("SELECT * FROM jbstate where country_id='1' ".$where." ");
+		return $query;
+	}
+
+	function q_city_state($par = NULL)
+	{
+		$where	="";
+		if(array_key_exists('city_id',$par)){
+			$where	.= " and jc.city_id='".$par['city_id']."'";
+		}
+
+		$sql	= "SELECT * FROM jbstate jst, jbcity jc where country_id='1'  and jst.state_id=jc.state_id ".$where;
+		//echo $sql;
+		$query	= $this->db->query($sql);
 		return $query;
 	}
 	
@@ -189,12 +220,16 @@ class Main_m extends CI_Model {
 				$set	.= ", password=md5('".$par['cpassword_baru']."')";
 			
 			}
-
 		}
 	
 		$sql	= "update jbuser set username='".$par['username']."' ".$set." where user_id='".$par['user_id']."'";
 		$this->db->query($sql);
 	}
 	
+	function log($par){
+		$sql	= "insert into jbseek_activities (sk_id,act_do,	act_detail)values('".$par['sk_id']."','".$par['act_do']."','".$par['act_detail']."')";
+		$this->db->query($sql);	
+	}
+
 }	
 

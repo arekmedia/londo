@@ -5,14 +5,21 @@ class Js_m extends CI_Model {
 	function list_pekerja($par = NULL){
 		$where	= "";
 
-		//if(!empty($par['']) && )
+		if(!empty($par['edu_field']) && $par['edu_field'] != "")
+			$where .= " and je.edu_field_id='".$par['edu_field']."' ";
+		if(!empty($par['umur1']) && $par['umur1'] != "")
+			$where .= " and year(js.sk_tgl_lahir) between '".$par['umur2']."' and '".$par['umur1']."' ";
+		if(!empty($par['jk']) && $par['jk'] != "")
+			$where .= " and js.sk_jns_klm='".$par['jk']."' ";
+		if(!empty($par['edu_qualify']) && $par['edu_qualify'] != "" && $par['edu_qualify'] != "0,")
+			$where .= " and je.edu_qualify_id IN(".$par['edu_qualify'].") ";
 
-		$sql	= "SELECT je.*,js.*,ju.email,jc.city_value,jt.state_value,jt.state_id FROM  jbuser ju, jbcity jc, jbstate jt, jbseek js
+		$sql	= "SELECT  je.*,js.*,ju.email,jc.city_value,jt.state_value,jt.state_id FROM  jbuser ju, jbcity jc, jbstate jt, jbseek js
 		left join jbseek_edu je on js.sk_id=je.sk_id  
 		left join jbseek_rule jr on js.sk_id=jr.sk_id
 		left join jbmaster_edu_qualify jq on je.edu_qualify_id=jq.edu_qualify_id
 		where 1 ".$where." and jr.rule_id='1' and jr.value='1' and ju.user_id=js.user_id and js.city_id=jc.city_id and jc.state_id = jt.state_id group by js.sk_id";
-	
+		//echo $sql;
 		$query	= $this->db->query($sql);
 		return $query;
 	}
@@ -25,14 +32,12 @@ class Js_m extends CI_Model {
 	{
 		$where	= "";
 
+		if(array_key_exists('sk_id',$js_p))
+			$where	.= " and js.sk_id = '".$js_p['sk_id']."'";
 		if(array_key_exists('user_id',$js_p))
-		{
 			$where	.= " and ju.user_id = '".$js_p['user_id']."'";
-		}
 		if(array_key_exists('priv',$js_p))
-		{
 			$where	.= " and ju.priv = '".$js_p['priv']."'";
-		}
 		
 		$query	= $this->db->query("SELECT js.*,ju.email,jc.city_value,jt.state_value,jt.state_id FROM jbseek js, jbuser ju, jbcity jc, jbstate jt where ju.user_id=js.user_id and js.city_id=jc.city_id and jc.state_id = jt.state_id ".$where." ");
 		return $query;
@@ -107,7 +112,7 @@ class Js_m extends CI_Model {
 		if(array_key_exists('exper_id',$par))
 			$where	.= " and je.exper_id = '".$par['exper_id']."'";
 	
-		$sql	= "SELECT * FROM `jbseek_experience` je, jbcompany_type jt where jt.comp_type_id=je.comp_type_id ".$where." order by exper_id desc";
+		$sql	= "SELECT * FROM `jbseek_experience` je, jbcompany_type jt, jbspecialist jsp where je.spes_id=jsp.spes_id and jt.comp_type_id=je.comp_type_id ".$where." order by exper_id desc";
 		$query	= $this->db->query($sql);
 		return $query;
 	}
@@ -138,6 +143,7 @@ class Js_m extends CI_Model {
 		$sql	= "insert into jbseek_experience (exper_comp,comp_type_id,spes_id,date_start,date_out,alasan_keluar,exper_jobdesc,exper_position,exper_salary,sk_id) 
 		values 
 		('".$par['exper_comp']."','".$par['comp_type_id']."','".$par['spes']."','".$par['date_start']."','".$par['date_out']."','".$par['alasan_keluar']."','".$par['exper_jobdesc']."','".$par['exper_position']."','".$par['exper_salary']."','".$par['sk_id']."')";
+
 		$this->db->query($sql);
 		
 	}
@@ -173,5 +179,20 @@ class Js_m extends CI_Model {
 	
 	}
 
+	function q_info_lowongan($par){
+		$where	= "";
+		if(!empty($par['sk_id']) && $par['sk_id'] == "")
+			$where	.= " and sk_id ='".$par['sk_id']."'";
+		
+		$sql	= "select * from jbseek_favorite where 1 ".$where;
+		$query	= $this->db->query($sql);
+		//echo $sql;
+		return $query;
+	}
+	
+	function set_info_lowongan($par){
+		$this->db->query("delete from jbseek_favorite where sk_id='".$par['sk_id']."'");
+		$this->db->query("insert into jbseek_favorite(sk_id,spes_list,sallary_min,sallary_max) values ('".$par['sk_id']."','".$par['myspeslist']."','".$par['gaji_min']."','".$par['gaji_max']."')");
+	}
 
 }
