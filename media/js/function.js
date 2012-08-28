@@ -1,4 +1,4 @@
-var uri	= "http://"+window.location.host+"/bk/";
+var uri	= "http://"+window.location.host+"/londo/";
 
 	function confirm(msg,run){
 			jConfirm(msg, 'Konfirmasi Tindakan', function(r) {
