@@ -1,0 +1,29 @@
+
+/* Reset default browser styles */
+@import url('reset.css');
+
+/* Rebuild default browser styles */
+@import url('boilplate.css');
+
+/* Main Website Styles  */
+@import url('rebuild.css');
+
+/* Custom Main Website Styles  */
+@import url('custom-rebuild.css');
+
+/* Layout Styles  */
+@import url('wide.css');
+
+/* Skin Styles  */ 
+@import url('original-wide.css');
+
+/* Login Box  */ 
+@import url('login-box.css');
+
+ 
+ body {
+    background: #ffffff top center repeat-x url("../../images/template/bg/color-wave.jpg");  
+    font-size:13px; 
+    color:#777777; 
+    font-family: Arial, Helvetica, sans-serif; 
+ }
