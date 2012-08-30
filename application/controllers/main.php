@@ -9,10 +9,10 @@ class Main extends CI_Controller {
 	
 	function index()
 	{
-		$data['content']		= "main";
-		$data['side']			= "main_company";
+		$main_p['comp_limit']	= 20;
+		$data		            = $this->main_m->q_lokasi($main_p);
 		$data['base_url']		= $this->config->item('base_url');
-		$this->load->view('backend',$data);
+		$this->load->view('front',$data);
 	}
 
 	function ragam_lowongan(){
@@ -48,7 +48,7 @@ class Main extends CI_Controller {
 		   );
 
 		$this->session->unset_userdata($logindata);
-		redirect('main', 'refresh');
+		redirect('front', 'refresh');
 
 	}
 	

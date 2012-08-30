@@ -3,7 +3,7 @@ date_default_timezone_set('Asia/Jakarta');
 
 $host	= "localhost";
 $user	= "root";
-$pass	= "";
+$pass	= "root";
 $db		= "lowongan";
 
 mysql_connect($host,$user,$pass) or die('Unable to connect');
